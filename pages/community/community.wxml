@@ -1,0 +1,84 @@
+<!--pages/community/community.wxml-->
+<view class="community-container">
+	<!-- 社区头部 -->
+	<view class="community-header">
+		<view class="header-content">
+			<text class="page-title">旅行社区</text>
+			<text class="page-subtitle">与志同道合的旅行者交流分享</text>
+		</view>
+	</view>
+	
+	<!-- 搜索栏 -->
+	<view class="search-section">
+		<view class="search-container">
+			<input class="search-input" placeholder="搜索帖子、用户或话题..." bindinput="onSearchInput" value="{{searchText}}" />
+			<button class="search-btn" bindtap="searchPosts">搜索</button>
+		</view>
+	</view>
+	
+	<!-- 内容区域 -->
+	<view class="main-content">
+		<!-- 热门分类 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">热门分类</text>
+			</view>
+			<view class="category-grid">
+				<view class="category-item" wx:for="{{hotCategories}}" wx:key="id" bindtap="viewCategory" data-category="{{item.name}}">
+					<view class="category-icon">{{item.icon}}</view>
+					<text class="category-name">{{item.name}}</text>
+					<text class="category-count">{{item.count}} 讨论</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 旅行风格 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">旅行风格</text>
+			</view>
+			<view class="style-grid">
+				<view class="style-item" wx:for="{{travelStyles}}" wx:key="id" bindtap="selectTravelStyle" data-style="{{item.name}}">
+					<view class="style-icon">{{item.icon}}</view>
+					<text class="style-name">{{item.name}}</text>
+					<text class="style-desc">{{item.desc}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 最新帖子 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">最新帖子</text>
+				<text class="view-all" bindtap="viewAllPosts">查看全部</text>
+			</view>
+			<view class="posts-list">
+				<view class="post-item" wx:for="{{latestPosts}}" wx:key="id" bindtap="viewPostDetail" data-post="{{item.id}}">
+					<view class="post-header">
+						<image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"></image>
+						<view class="author-info">
+							<text class="author-name">{{item.authorName}}</text>
+							<text class="post-time">{{item.createTime}}</text>
+						</view>
+					</view>
+					<view class="post-content">
+						<text class="post-title">{{item.title}}</text>
+						<text class="post-excerpt">{{item.content}}</text>
+					</view>
+					<view class="post-footer">
+						<view class="post-stats">
+							<text class="stat-item">❤️ {{item.likes}}</text>
+							<text class="stat-item">💬 {{item.comments}}</text>
+						</view>
+						<text class="post-tag">{{item.tag}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	
+	<!-- 发布按钮 -->
+	<view class="publish-fab" bindtap="createPost">
+		<text class="fab-icon">+</text>
+	</view>
+</view>

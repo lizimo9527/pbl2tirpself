@@ -1,0 +1,145 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
+		},
+		{
+			"path": "pages/map/map",
+			"style": {
+				"navigationBarTitleText": "地图导航"
+			}
+		},
+		{
+			"path": "pages/create/create",
+			"style": {
+				"navigationBarTitleText": "创建攻略"
+			}
+		},
+		{
+			"path": "pages/community/community",
+			"style": {
+				"navigationBarTitleText": "社区"
+			}
+		},
+		{
+			"path": "pages/match/match",
+			"style": {
+				"navigationBarTitleText": "匹配搭子"
+			}
+		},
+		{
+			"path": "pages/publish/publish",
+			"style": {
+				"navigationBarTitleText": "发布帖子"
+			}
+		},
+		{
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
+			"path": "pages/guide/guide-enhanced",
+			"style": {
+				"navigationBarTitleText": "攻略详情"
+			}
+		},
+		{
+			"path": "pages/templates/templates",
+			"style": {
+				"navigationBarTitleText": "攻略模板"
+			}
+		},
+		{
+			"path": "pages/my-plans/my-plans",
+			"style": {
+				"navigationBarTitleText": "我的攻略"
+			}
+		},
+		{
+			"path": "pages/plan/edit/edit",
+			"style": {
+				"navigationBarTitleText": "编辑攻略"
+			}
+		},
+		{
+			"path": "pages/database/database",
+			"style": {
+				"navigationBarTitleText": "数据库管理"
+			}
+		},
+		{
+			"path": "pages/test/test",
+			"style": {
+				"navigationBarTitleText": "连接测试"
+			}
+		},
+		{
+			"path": "pages/template-detail/template-detail",
+			"style": {
+				"navigationBarTitleText": "模板详情"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "tripself",
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#f5f5f5",
+		"mp-weixin": {
+			"navigationBarBackgroundColor": "#1A9E8F",
+			"navigationBarTextStyle": "white",
+			"enablePullDownRefresh": true,
+			"onReachBottomDistance": 50
+		}
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#1A9E8F",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "/static/images/tabbar/首页.png",
+				"selectedIconPath": "/static/images/tabbar/首页.png"
+			},
+			{
+				"pagePath": "pages/create/create",
+				"text": "制作攻略",
+				"iconPath": "/static/images/tabbar/攻略.png",
+				"selectedIconPath": "/static/images/tabbar/攻略.png"
+			},
+			{
+				"pagePath": "pages/community/community",
+				"text": "发帖社区",
+				"iconPath": "/static/images/tabbar/社区.png",
+				"selectedIconPath": "/static/images/tabbar/社区.png"
+			},
+			{
+				"pagePath": "pages/match/match",
+				"text": "匹配搭子",
+				"iconPath": "/static/images/tabbar/搭子.png",
+				"selectedIconPath": "/static/images/tabbar/搭子.png"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"text": "我的",
+				"iconPath": "/static/images/tabbar/我的.png",
+				"selectedIconPath": "/static/images/tabbar/我的.png"
+			}
+		]
+	}
+}

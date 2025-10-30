@@ -1,0 +1,17 @@
+<!--pages/search/search.wxml-->
+<view class="search-container">
+	<view class="search-header">
+		<view class="search-bar">
+			<input class="search-input" placeholder="搜索攻略、目的地、用户..." value="{{searchText}}" />
+			<button class="search-btn" bindtap="handleSearch">搜索</button>
+		</view>
+	</view>
+	
+	<view class="search-content">
+		<view class="placeholder-content">
+			<text class="search-icon">🔍</text>
+			<text class="search-text">搜索功能</text>
+			<text class="search-desc">这里将显示搜索结果</text>
+		</view>
+	</view>
+</view>

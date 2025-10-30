@@ -1,0 +1,147 @@
+/*
+ * TripSelf 跨平台样式适配
+ * 支持微信小程序和H5网页端
+ */
+
+/* 平台检测和适配 */
+@mixin platform($platform) {
+  @if $platform == 'h5' {
+    /* H5端特定样式 */
+    @content;
+  } @else if $platform == 'mp-weixin' {
+    /* 微信小程序端特定样式 */
+    @content;
+  }
+}
+
+/* 响应式断点 */
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+
+/* 移动端优先的响应式设计 */
+@mixin mobile-first {
+  /* 移动端基础样式 */
+  @content;
+  
+  /* 平板适配 */
+  @media (min-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+  
+  /* PC端适配 */
+  @media (min-width: #{$breakpoint-tablet}) {
+    @content;
+  }
+}
+
+/* 通用组件样式 */
+.btn-primary {
+  background: $tripself-gradient;
+  color: white;
+  border: none;
+  border-radius: $uni-border-radius-base;
+  padding: 20rpx 40rpx;
+  font-size: $uni-font-size-base;
+  
+  @include platform('h5') {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+  
+  @include platform('mp-weixin') {
+    &:active {
+      opacity: 0.7;
+    }
+  }
+}
+
+.card {
+  background: white;
+  border-radius: $uni-border-radius-lg;
+  box-shadow: $tripself-shadow;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+/* 布局工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* 间距工具类 */
+.m-0 { margin: 0; }
+.m-10 { margin: 10rpx; }
+.m-20 { margin: 20rpx; }
+.m-30 { margin: 30rpx; }
+
+.p-0 { padding: 0; }
+.p-10 { padding: 10rpx; }
+.p-20 { padding: 20rpx; }
+.p-30 { padding: 30rpx; }
+
+/* 文本工具类 */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-sm { font-size: $uni-font-size-sm; }
+.text-base { font-size: $uni-font-size-base; }
+.text-lg { font-size: $uni-font-size-lg; }
+
+.text-primary { color: $tripself-primary; }
+.text-secondary { color: $tripself-secondary; }
+.text-muted { color: $uni-text-color-grey; }
+
+/* 平台特定的样式修复 */
+@include platform('h5') {
+  /* H5端样式修复 */
+  .safe-area {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* 防止H5端滚动条闪烁 */
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+}
+
+@include platform('mp-weixin') {
+  /* 微信小程序端样式修复 */
+  .safe-area {
+    padding-top: 44px; /* 微信小程序状态栏高度 */
+  }
+  
+  /* 小程序端按钮样式优化 */
+  button {
+    border-radius: $uni-border-radius-base !important;
+    
+    &::after {
+      border: none !important;
+    }
+  }
+}

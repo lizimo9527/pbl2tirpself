@@ -1,0 +1,83 @@
+<!--pages/create/create.wxml-->
+<view class="create-container">
+	<view class="create-header">
+		<text class="create-title">创建攻略</text>
+	</view>
+	
+	<view class="form-section">
+		<view class="form-item">
+			<text class="form-label">攻略标题</text>
+			<input class="form-input" placeholder="请输入攻略标题" bindinput="onTitleInput" value="{{title}}" />
+		</view>
+		
+		<view class="form-item">
+			<text class="form-label">目的地</text>
+			<input class="form-input" placeholder="请输入目的地" bindinput="onDestinationInput" value="{{destination}}" />
+		</view>
+
+		<!-- 地图展示模块 -->
+		<view class="form-item">
+			<view class="map-section-header">
+				<text class="form-label">地图定位</text>
+				<view class="map-controls">
+					<button class="map-control-btn" bindtap="locateOnMap">定位</button>
+					<button class="map-control-btn" bindtap="searchOnMap">搜索</button>
+				</view>
+			</view>
+			<view class="map-container">
+				<view class="map-placeholder">
+					<text class="map-icon">🗺️</text>
+					<text class="map-text">地图展示</text>
+					<text class="map-desc">支持缩放、拖动、标记点操作</text>
+					<view class="map-coordinates" wx:if="{{selectedLocation}}">
+						<text class="coordinate-text">经度: {{selectedLocation.longitude}}</text>
+						<text class="coordinate-text">纬度: {{selectedLocation.latitude}}</text>
+					</view>
+				</view>
+				<view class="map-actions">
+					<button class="map-action-btn" bindtap="addMarker">添加标记</button>
+					<button class="map-action-btn" bindtap="clearMarkers">清除标记</button>
+				</view>
+			</view>
+		</view>
+		
+		<view class="form-item">
+			<text class="form-label">攻略内容</text>
+			<textarea class="form-textarea" placeholder="请输入详细的攻略内容..." bindinput="onContentInput" value="{{content}}" maxlength="1000" />
+		</view>
+		
+		<view class="form-item">
+			<text class="form-label">上传图片</text>
+			<view class="image-upload">
+				<view class="upload-btn" bindtap="chooseImage">
+					<text class="upload-icon">+</text>
+					<text class="upload-text">添加图片</text>
+				</view>
+				<view class="image-preview" wx:if="{{imagePath}}">
+					<image src="{{imagePath}}" mode="aspectFill" class="preview-image" />
+					<view class="remove-btn" bindtap="removeImage">×</view>
+				</view>
+			</view>
+		</view>
+		
+		<view class="form-item">
+			<text class="form-label">标签</text>
+			<view class="tags-container">
+				<view class="tag-input-container">
+					<input class="tag-input" placeholder="输入标签后按回车" bindinput="onTagInput" value="{{tagInput}}" bindconfirm="addTag" />
+				</view>
+				<view class="tags-list">
+					<view class="tag-item" wx:for="{{tags}}" wx:key="index">
+						<text class="tag-text">{{item}}</text>
+						<text class="tag-remove" bindtap="removeTag" data-index="{{index}}">×</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	
+	<view class="action-buttons">
+		<button class="save-btn" bindtap="saveDraft">保存草稿</button>
+		<button class="publish-btn" bindtap="publishGuide">发布攻略</button>
+	</view>
+</view>

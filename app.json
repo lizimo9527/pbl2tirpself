@@ -1,0 +1,85 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/user",
+    "pages/map/map",
+    "pages/create/create",
+    "pages/community/community",
+    "pages/match/match",
+    "pages/publish/publish",
+    "pages/search/search",
+    "pages/guide/guide-enhanced",
+    "pages/templates/templates",
+    "pages/my-plans/my-plans",
+    "pages/plan/edit/edit",
+    "pages/database/database",
+    "pages/test/test",
+    "pages/template-detail/template-detail"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "tripself",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f5f5",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#1A9E8F",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/images/tabbar/首页.png",
+        "selectedIconPath": "/static/images/tabbar/首页.png"
+      },
+      {
+        "pagePath": "pages/create/create",
+        "text": "制作攻略",
+        "iconPath": "/static/images/tabbar/攻略.png",
+        "selectedIconPath": "/static/images/tabbar/攻略.png"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "发帖社区",
+        "iconPath": "/static/images/tabbar/社区.png",
+        "selectedIconPath": "/static/images/tabbar/社区.png"
+      },
+      {
+        "pagePath": "pages/match/match",
+        "text": "匹配搭子",
+        "iconPath": "/static/images/tabbar/搭子.png",
+        "selectedIconPath": "/static/images/tabbar/搭子.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "/static/images/tabbar/我的.png",
+        "selectedIconPath": "/static/images/tabbar/我的.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于获取当前位置信息"
+    }
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents",
+  "mp-weixin": {
+    "navigationBarBackgroundColor": "#1A9E8F",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 50
+  }
+}

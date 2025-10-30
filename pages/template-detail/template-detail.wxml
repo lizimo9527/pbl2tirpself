@@ -1,0 +1,21 @@
+<!--pages/template-detail/template-detail.wxml-->
+<view class="template-detail-container">
+	<view class="header">
+		<text class="title">模板详情</text>
+		<text class="subtitle">查看模板详细信息</text>
+	</view>
+	
+	<view class="template-content">
+		<view class="placeholder-template">
+			<text class="template-icon">📋</text>
+			<text class="template-text">模板详情页面</text>
+			<text class="template-desc">这里将显示模板的详细信息</text>
+		</view>
+	</view>
+	
+	<view class="action-buttons">
+		<button class="action-btn" bindtap="goBack">
+			<text>返回</text>
+		</button>
+	</view>
+</view>

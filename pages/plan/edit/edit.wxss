@@ -1,0 +1,415 @@
+/* pages/plan/edit/edit.wxss */
+.plan-container {
+	min-height: 100vh;
+	background-color: #f5f7fa;
+	padding: 20rpx;
+}
+
+.header {
+	text-align: center;
+	margin-bottom: 30rpx;
+	padding: 20rpx 0;
+	background: linear-gradient(135deg, #1A9E8F 0%, #2ECC71 100%);
+	border-radius: 20rpx;
+	color: white;
+}
+
+.title {
+	font-size: 40rpx;
+	font-weight: bold;
+	display: block;
+	margin-bottom: 10rpx;
+}
+
+.subtitle {
+	font-size: 26rpx;
+	opacity: 0.9;
+	display: block;
+}
+
+/* 日期标签样式 */
+.date-tabs {
+	margin-bottom: 30rpx;
+}
+
+.date-scroll {
+	white-space: nowrap;
+}
+
+.date-tab {
+	display: inline-block;
+	padding: 20rpx 30rpx;
+	margin-right: 15rpx;
+	background-color: white;
+	border-radius: 15rpx;
+	text-align: center;
+	min-width: 150rpx;
+	box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+	transition: all 0.3s;
+}
+
+.date-tab.active {
+	background: linear-gradient(135deg, #1A9E8F 0%, #2ECC71 100%);
+	color: white;
+}
+
+.date-text {
+	font-size: 28rpx;
+	font-weight: bold;
+	display: block;
+}
+
+.date-desc {
+	font-size: 22rpx;
+	opacity: 0.8;
+	display: block;
+	margin-top: 5rpx;
+}
+
+/* 地图区域样式 */
+.map-section {
+	background-color: white;
+	border-radius: 20rpx;
+	padding: 30rpx;
+	margin-bottom: 30rpx;
+	box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.map-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.section-title {
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #333;
+}
+
+.map-controls {
+	display: flex;
+	gap: 10rpx;
+}
+
+.control-btn {
+	width: 60rpx;
+	height: 60rpx;
+	background-color: #1A9E8F;
+	color: white;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: bold;
+}
+
+.map-placeholder {
+	height: 300rpx;
+	background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+	border-radius: 15rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border: 2rpx dashed #1A9E8F;
+}
+
+.map-icon {
+	font-size: 80rpx;
+	margin-bottom: 20rpx;
+}
+
+.map-text {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 10rpx;
+}
+
+.map-desc {
+	font-size: 22rpx;
+	color: #666;
+}
+
+/* 地点列表样式 */
+.locations-section {
+	background-color: white;
+	border-radius: 20rpx;
+	padding: 30rpx;
+	margin-bottom: 30rpx;
+	box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.add-btn {
+	background-color: #1A9E8F;
+	color: white;
+	border-radius: 10rpx;
+	padding: 15rpx 25rpx;
+	font-size: 24rpx;
+}
+
+.locations-list {
+	max-height: 400rpx;
+	overflow-y: auto;
+}
+
+.location-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx;
+	border-bottom: 1rpx solid #eee;
+	transition: background-color 0.3s;
+}
+
+.location-item:last-child {
+	border-bottom: none;
+}
+
+.location-item:active {
+	background-color: #f8f9fa;
+}
+
+.location-info {
+	flex: 1;
+}
+
+.location-name {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #333;
+	display: block;
+	margin-bottom: 5rpx;
+}
+
+.location-details {
+	font-size: 22rpx;
+	color: #666;
+}
+
+.location-actions {
+	display: flex;
+	gap: 10rpx;
+}
+
+.action-btn {
+	padding: 10rpx 20rpx;
+	border-radius: 8rpx;
+	font-size: 22rpx;
+}
+
+.edit-btn {
+	background-color: #ffa726;
+	color: white;
+}
+
+.delete-btn {
+	background-color: #ef5350;
+	color: white;
+}
+
+/* 路线规划样式 */
+.route-section {
+	background-color: white;
+	border-radius: 20rpx;
+	padding: 30rpx;
+	margin-bottom: 30rpx;
+	box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.route-btn {
+	background-color: #1A9E8F;
+	color: white;
+	border-radius: 10rpx;
+	padding: 15rpx 25rpx;
+	font-size: 24rpx;
+}
+
+.route-info {
+	margin-top: 20rpx;
+}
+
+.route-total {
+	font-size: 26rpx;
+	font-weight: bold;
+	color: #333;
+	display: block;
+	margin-bottom: 15rpx;
+}
+
+.route-segments {
+	display: flex;
+	flex-direction: column;
+	gap: 10rpx;
+}
+
+.route-segment {
+	padding: 15rpx;
+	background-color: #f8f9fa;
+	border-radius: 10rpx;
+	border-left: 4rpx solid #1A9E8F;
+}
+
+.segment-info {
+	font-size: 22rpx;
+	color: #666;
+}
+
+/* 模态框样式 */
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.modal-content {
+	background-color: white;
+	border-radius: 20rpx;
+	width: 90%;
+	max-width: 600rpx;
+	max-height: 80%;
+	overflow: hidden;
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #eee;
+}
+
+.modal-title {
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #333;
+}
+
+.close-btn {
+	background: none;
+	border: none;
+	font-size: 40rpx;
+	color: #999;
+	padding: 0;
+	width: 60rpx;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.search-input {
+	padding: 30rpx;
+	display: flex;
+	gap: 15rpx;
+}
+
+.search-field {
+	flex: 1;
+	border: 1rpx solid #ddd;
+	border-radius: 10rpx;
+	padding: 20rpx;
+	font-size: 26rpx;
+}
+
+.search-btn {
+	background-color: #1A9E8F;
+	color: white;
+	border-radius: 10rpx;
+	padding: 20rpx 30rpx;
+	font-size: 26rpx;
+}
+
+.search-results {
+	max-height: 400rpx;
+	overflow-y: auto;
+	padding: 0 30rpx 30rpx;
+}
+
+.search-result {
+	padding: 20rpx;
+	border-bottom: 1rpx solid #eee;
+	transition: background-color 0.3s;
+}
+
+.search-result:last-child {
+	border-bottom: none;
+}
+
+.search-result:active {
+	background-color: #f8f9fa;
+}
+
+.result-name {
+	font-size: 26rpx;
+	font-weight: bold;
+	color: #333;
+	display: block;
+	margin-bottom: 5rpx;
+}
+
+.result-type {
+	font-size: 22rpx;
+	color: #666;
+}
+
+.note-input {
+	padding: 30rpx;
+}
+
+.note-field {
+	width: 100%;
+	height: 200rpx;
+	border: 1rpx solid #ddd;
+	border-radius: 10rpx;
+	padding: 20rpx;
+	font-size: 26rpx;
+	margin-bottom: 15rpx;
+}
+
+.note-count {
+	font-size: 22rpx;
+	color: #999;
+	text-align: right;
+	display: block;
+}
+
+.modal-actions {
+	display: flex;
+	gap: 15rpx;
+	padding: 0 30rpx 30rpx;
+	justify-content: flex-end;
+}
+
+.cancel-btn {
+	background-color: #f8f9fa;
+	color: #666;
+	border-radius: 10rpx;
+	padding: 20rpx 30rpx;
+	font-size: 26rpx;
+}
+
+.confirm-btn {
+	background-color: #1A9E8F;
+	color: white;
+	border-radius: 10rpx;
+	padding: 20rpx 30rpx;
+	font-size: 26rpx;
+}

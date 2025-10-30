@@ -1,0 +1,141 @@
+<!--pages/plan/edit/edit.wxml-->
+<view class="plan-container">
+	<!-- 顶部标题栏 -->
+	<view class="header">
+		<text class="title">旅行规划</text>
+		<text class="subtitle">在地图上规划您的完美行程</text>
+	</view>
+
+	<!-- 日期切换模块 -->
+	<view class="date-tabs">
+		<scroll-view class="date-scroll" scroll-x="true">
+			<view 
+				wx:for="{{dates}}" 
+				wx:key="index"
+				class="date-tab {{currentDateIndex === index ? 'active' : ''}}"
+				bindtap="switchDate"
+				data-index="{{index}}"
+			>
+				<text class="date-text">{{item.name}}</text>
+				<text class="date-desc">{{item.desc}}</text>
+			</view>
+		</scroll-view>
+	</view>
+
+	<!-- 地图展示模块 -->
+	<view class="map-section">
+		<view class="map-header">
+			<text class="section-title">地图展示</text>
+			<view class="map-controls">
+				<button class="control-btn" bindtap="zoomIn">+</button>
+				<button class="control-btn" bindtap="zoomOut">-</button>
+			</view>
+		</view>
+		<view class="map-placeholder">
+			<text class="map-icon">🗺️</text>
+			<text class="map-text">地图组件</text>
+			<text class="map-desc">支持缩放、拖动、标记点操作</text>
+			</view>
+	</view>
+
+	<!-- 地点列表模块 -->
+	<view class="locations-section">
+		<view class="section-header">
+			<text class="section-title">当日行程</text>
+			<button class="add-btn" bindtap="showSearchModal">+ 添加地点</button>
+		</view>
+		<view class="locations-list">
+			<view 
+				wx:for="{{locations[currentDateIndex]}}" 
+				wx:key="index"
+				class="location-item"
+				bindtap="focusOnLocation"
+				data-index="{{index}}"
+			>
+				<view class="location-info">
+					<text class="location-name">{{item.name}}</text>
+					<text class="location-details">{{item.transport}} · {{item.distance}} · {{item.duration}}</text>
+				</view>
+				<view class="location-actions">
+					<button class="action-btn edit-btn" bindtap="editLocation" data-index="{{index}}">编辑</button>
+					<button class="action-btn delete-btn" bindtap="deleteLocation" data-index="{{index}}">删除</button>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<!-- 路线规划模块 -->
+	<view class="route-section">
+		<view class="section-header">
+			<text class="section-title">路线规划</text>
+			<button class="route-btn" bindtap="generateRoute">智能路线规划</button>
+		</view>
+		<view class="route-info">
+			<text class="route-total">总行程：{{routeInfo.totalDistance}} · {{routeInfo.totalDuration}}</text>
+			<view class="route-segments">
+				<view 
+					wx:for="{{routeInfo.segments}}" 
+					wx:key="index"
+					class="route-segment"
+				>
+					<text class="segment-info">{{item.distance}} {{item.duration}}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<!-- 搜索模态框 -->
+	<view class="modal" wx:if="{{showSearch}}">
+		<view class="modal-content">
+			<view class="modal-header">
+				<text class="modal-title">搜索地点</text>
+				<button class="close-btn" bindtap="hideSearchModal">×</button>
+			</view>
+			<view class="search-input">
+				<input 
+					value="{{searchKeyword}}" 
+					placeholder="输入景点、住宿、交通枢纽等关键词"
+					class="search-field"
+					bindinput="onSearchInput"
+				/>
+				<button class="search-btn" bindtap="searchLocations">搜索</button>
+			</view>
+			<view class="search-results">
+				<view 
+					wx:for="{{searchResults}}" 
+					wx:key="index"
+					class="search-result"
+					bindtap="addLocationFromSearch"
+					data-index="{{index}}"
+				>
+					<text class="result-name">{{item.name}}</text>
+					<text class="result-type">{{item.type}}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<!-- 备注编辑模态框 -->
+	<view class="modal" wx:if="{{showNoteModal}}">
+		<view class="modal-content">
+			<view class="modal-header">
+				<text class="modal-title">添加备注</text>
+				<button class="close-btn" bindtap="hideNoteModal">×</button>
+			</view>
+			<view class="note-input">
+				<textarea 
+					value="{{currentNote}}" 
+					placeholder="输入对该地点的行程安排、特色说明等备注信息"
+					class="note-field"
+					maxlength="200"
+					bindinput="onNoteInput"
+				></textarea>
+				<text class="note-count">{{currentNote.length}}/200</text>
+			</view>
+			<view class="modal-actions">
+				<button class="cancel-btn" bindtap="hideNoteModal">取消</button>
+				<button class="confirm-btn" bindtap="saveNote">保存</button>
+			</view>
+		</view>
+	</view>
+</view>

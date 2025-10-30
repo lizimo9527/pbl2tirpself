@@ -1,0 +1,226 @@
+
+.create-container {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		background-color: #ffffff;
+		padding: 30rpx;
+}
+.create-header {
+		margin-bottom: 30rpx;
+}
+.create-title {
+		font-size: 36rpx;
+		font-weight: bold;
+		color: #333333;
+}
+.form-section {
+		flex: 1;
+}
+.form-item {
+		margin-bottom: 40rpx;
+}
+.form-label {
+		display: block;
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 15rpx;
+}
+.form-input {
+		width: 100%;
+		height: 80rpx;
+		padding: 0 20rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		background-color: #f9f9f9;
+}
+.form-textarea {
+		width: 100%;
+		height: 200rpx;
+		padding: 20rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		background-color: #f9f9f9;
+}
+
+	/* 地图模块样式 */
+.map-section-header {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 15rpx;
+}
+.map-controls {
+		display: flex;
+		flex-direction: column;
+		gap: 15rpx;
+		margin-top: 15rpx;
+}
+.map-control-btn {
+		background-color: #1A9E8F;
+		color: white;
+		border-radius: 8rpx;
+		padding: 15rpx 20rpx;
+		font-size: 28rpx;
+		border: none;
+		text-align: center;
+		transition: all 0.2s ease;
+}
+.map-control-btn:active {
+		background-color: #15897A;
+		transform: scale(0.98);
+}
+.map-container {
+		background-color: white;
+		border-radius: 15rpx;
+		padding: 20rpx;
+		border: 2rpx solid #e5e5e5;
+		position: relative;
+}
+.tencent-map {
+		width: 100%;
+		height: 300rpx;
+		border-radius: 10rpx;
+		margin-bottom: 15rpx;
+}
+
+	/* 地图加载状态 */
+.map-loading {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: rgba(255, 255, 255, 0.9);
+		padding: 20rpx 30rpx;
+		border-radius: 15rpx;
+		box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
+		z-index: 10;
+}
+.loading-text {
+		font-size: 24rpx;
+		color: #666;
+}
+.map-coordinates {
+		margin-top: 15rpx;
+		padding: 15rpx;
+		background-color: rgba(26, 158, 143, 0.1);
+		border-radius: 8rpx;
+		text-align: left;
+}
+.coordinate-text {
+		font-size: 20rpx;
+		color: #1A9E8F;
+		display: block;
+		margin: 5rpx 0;
+		line-height: 1.4;
+}
+.image-upload {
+		display: flex;
+		align-items: center;
+}
+.upload-btn {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 150rpx;
+		height: 150rpx;
+		border: 2rpx dashed #e5e5e5;
+		border-radius: 10rpx;
+		background-color: #f9f9f9;
+}
+.upload-icon {
+		font-size: 48rpx;
+		color: #999999;
+		margin-bottom: 10rpx;
+}
+.upload-text {
+		font-size: 24rpx;
+		color: #999999;
+}
+.image-preview {
+		position: relative;
+		margin-left: 20rpx;
+}
+.preview-image {
+		width: 150rpx;
+		height: 150rpx;
+		border-radius: 10rpx;
+}
+.remove-btn {
+		position: absolute;
+		top: -10rpx;
+		right: -10rpx;
+		width: 40rpx;
+		height: 40rpx;
+		background-color: #ff4444;
+		color: white;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 24rpx;
+		font-weight: bold;
+}
+.tags-container {
+		display: flex;
+		flex-direction: column;
+}
+.tag-input-container {
+		margin-bottom: 20rpx;
+}
+.tag-input {
+		width: 100%;
+		height: 60rpx;
+		padding: 0 20rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		background-color: #f9f9f9;
+}
+.tags-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15rpx;
+}
+.tag-item {
+		display: flex;
+		align-items: center;
+		padding: 10rpx 20rpx;
+		background-color: #1A9E8F;
+		border-radius: 20rpx;
+		color: white;
+}
+.tag-text {
+		font-size: 24rpx;
+		margin-right: 10rpx;
+}
+.tag-remove {
+		font-size: 20rpx;
+		font-weight: bold;
+		cursor: pointer;
+}
+.action-buttons {
+		display: flex;
+		gap: 20rpx;
+		margin-top: 40rpx;
+}
+.save-btn, .publish-btn {
+		flex: 1;
+		height: 80rpx;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		font-weight: bold;
+}
+.save-btn {
+		background-color: #f8f9fa;
+		color: #666666;
+		border: 2rpx solid #e5e5e5;
+}
+.publish-btn {
+		background-color: #1A9E8F;
+		color: white;
+		border: none;
+}

@@ -1,0 +1,236 @@
+
+.community-container {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		background-color: #ffffff;
+}
+.community-header {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		padding: 60rpx 30rpx 40rpx;
+		color: white;
+}
+.header-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+}
+.page-title {
+		font-size: 48rpx;
+		font-weight: bold;
+		margin-bottom: 15rpx;
+}
+.page-subtitle {
+		font-size: 28rpx;
+		opacity: 0.9;
+}
+.search-section {
+		padding: 30rpx;
+		background-color: #f8f9fa;
+}
+.search-container {
+		display: flex;
+		align-items: center;
+		gap: 15rpx;
+}
+.search-input {
+		flex: 1;
+		height: 70rpx;
+		padding: 0 25rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 35rpx;
+		font-size: 28rpx;
+		background-color: white;
+}
+.search-btn {
+		height: 70rpx;
+		padding: 0 30rpx;
+		background-color: #1A9E8F;
+		color: white;
+		border-radius: 35rpx;
+		font-size: 28rpx;
+		font-weight: bold;
+		border: none;
+}
+.main-content {
+		flex: 1;
+		padding: 30rpx;
+}
+.section {
+		margin-bottom: 50rpx;
+}
+.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 25rpx;
+}
+.section-title {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #333333;
+}
+.view-all {
+		font-size: 24rpx;
+		color: #1A9E8F;
+}
+.category-grid {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: 15rpx;
+		justify-content: space-between;
+}
+.category-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 20rpx 10rpx;
+		background-color: #f8f9fa;
+		border: 1rpx solid #e9ecef;
+		border-radius: 12rpx;
+		width: calc(25% - 12rpx);
+		box-sizing: border-box;
+		color: #333333;
+		transition: all 0.2s ease;
+}
+.category-item:hover {
+		background-color: #ffffff;
+		box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+		transform: translateY(-2rpx);
+}
+.category-icon {
+		font-size: 36rpx;
+		margin-bottom: 12rpx;
+		color: #1A9E8F;
+}
+.category-name {
+		font-size: 24rpx;
+		font-weight: 600;
+		margin-bottom: 6rpx;
+		color: #333333;
+}
+.category-count {
+		font-size: 18rpx;
+		color: #666666;
+		opacity: 0.8;
+}
+.style-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20rpx;
+}
+.style-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 25rpx 15rpx;
+		background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+		border-radius: 15rpx;
+		width: calc(33.333% - 14rpx);
+		box-sizing: border-box;
+		color: white;
+		transition: all 0.2s ease;
+}
+.style-icon {
+		font-size: 48rpx;
+		margin-bottom: 10rpx;
+}
+.style-name {
+		font-size: 24rpx;
+		font-weight: bold;
+		margin-bottom: 5rpx;
+}
+.style-desc {
+		font-size: 20rpx;
+		opacity: 0.9;
+}
+.posts-list {
+		display: flex;
+		flex-direction: column;
+		gap: 25rpx;
+}
+.post-item {
+		padding: 30rpx;
+		background-color: #f8f9fa;
+		border-radius: 15rpx;
+		border: 2rpx solid #e9ecef;
+}
+.post-header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 20rpx;
+}
+.author-avatar {
+		width: 60rpx;
+		height: 60rpx;
+		border-radius: 50%;
+		margin-right: 15rpx;
+}
+.author-info {
+		display: flex;
+		flex-direction: column;
+}
+.author-name {
+		font-size: 26rpx;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 5rpx;
+}
+.post-time {
+		font-size: 22rpx;
+		color: #666666;
+}
+.post-content {
+		margin-bottom: 20rpx;
+}
+.post-title {
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 10rpx;
+		display: block;
+}
+.post-excerpt {
+		font-size: 24rpx;
+		color: #666666;
+		line-height: 1.5;
+}
+.post-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+}
+.post-stats {
+		display: flex;
+		gap: 20rpx;
+}
+.stat-item {
+		font-size: 22rpx;
+		color: #666666;
+}
+.post-tag {
+		font-size: 22rpx;
+		color: #1A9E8F;
+		background-color: rgba(26, 158, 143, 0.1);
+		padding: 5rpx 15rpx;
+		border-radius: 10rpx;
+}
+.publish-fab {
+		position: fixed;
+		right: 40rpx;
+		bottom: 40rpx;
+		width: 100rpx;
+		height: 100rpx;
+		background-color: #1A9E8F;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 4rpx 20rpx rgba(26, 158, 143, 0.3);
+}
+.fab-icon {
+		font-size: 40rpx;
+		color: white;
+		font-weight: bold;
+}

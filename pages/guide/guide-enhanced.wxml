@@ -1,0 +1,87 @@
+<!--pages/guide/guide-enhanced.wxml-->
+<view class="guide-container">
+	<!-- 攻略头部 -->
+	<view class="guide-header">
+		<view class="header-content">
+			<text class="page-title">攻略详情</text>
+			<text class="page-subtitle">查看完整的旅行攻略</text>
+		</view>
+	</view>
+	
+	<!-- 攻略内容 -->
+	<view class="main-content">
+		<!-- 攻略基本信息 -->
+		<view class="guide-basic-info">
+			<text class="guide-title">{{guideData.title}}</text>
+			<view class="guide-meta">
+				<text class="meta-item">📍 {{guideData.destination}}</text>
+				<text class="meta-item">📅 {{guideData.travelDate}}</text>
+				<text class="meta-item">⏱️ {{guideData.duration}} 天</text>
+			</view>
+			<view class="guide-tags">
+				<text class="guide-tag" wx:for="{{guideData.tags}}" wx:key="index">{{item}}</text>
+			</view>
+		</view>
+		
+		<!-- 攻略作者信息 -->
+		<view class="author-section">
+			<view class="author-info">
+				<image class="author-avatar" src="{{guideData.author.avatar}}" mode="aspectFill"></image>
+				<view class="author-details">
+					<text class="author-name">{{guideData.author.name}}</text>
+					<text class="author-level">{{guideData.author.level}}</text>
+				</view>
+			</view>
+			<view class="guide-stats">
+				<text class="stat-item">👁️ {{guideData.views}} 浏览</text>
+				<text class="stat-item">❤️ {{guideData.likes}} 点赞</text>
+				<text class="stat-item">💬 {{guideData.comments}} 评论</text>
+			</view>
+		</view>
+		
+		<!-- 攻略内容 -->
+		<view class="guide-content-section">
+			<view class="section">
+				<text class="section-title">行程概览</text>
+				<text class="section-content">{{guideData.overview}}</text>
+			</view>
+			
+			<view class="section" wx:for="{{guideData.itinerary}}" wx:key="day">
+				<text class="section-title">第{{item.day}}天：{{item.title}}</text>
+				<view class="day-content">
+					<text class="day-time">🕘 {{item.time}}</text>
+					<text class="day-location">📍 {{item.location}}</text>
+					<text class="day-description">{{item.description}}</text>
+					<view class="day-tips" wx:if="{{item.tips}}">
+						<text class="tips-title">💡 小贴士：</text>
+						<text class="tips-content">{{item.tips}}</text>
+					</view>
+				</view>
+			</view>
+			
+			<view class="section">
+				<text class="section-title">费用预算</text>
+				<view class="budget-list">
+					<view class="budget-item" wx:for="{{guideData.budget}}" wx:key="category">
+						<text class="budget-category">{{item.category}}</text>
+						<text class="budget-amount">¥{{item.amount}}</text>
+					</view>
+				</view>
+				<text class="total-budget">总计：¥{{guideData.totalBudget}}</text>
+			</view>
+		</view>
+		
+		<!-- 操作按钮 -->
+		<view class="action-buttons">
+			<button class="action-btn like-btn" bindtap="likeGuide">
+				<text>❤️ 点赞 ({{guideData.likes}})</text>
+			</button>
+			<button class="action-btn comment-btn" bindtap="showComments">
+				<text>💬 评论 ({{guideData.comments}})</text>
+			</button>
+			<button class="action-btn share-btn" bindtap="shareGuide">
+				<text>📤 分享</text>
+			</button>
+		</view>
+	</view>
+</view>

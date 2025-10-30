@@ -1,0 +1,88 @@
+<!--pages/index/index.wxml-->
+<view class="home-container">
+	<!-- 欢迎信息栏 -->
+	<view class="welcome-bar">
+		<view class="welcome-info">
+			<image class="user-avatar" src="/static/images/default-avatar.png" mode="aspectFill"></image>
+			<view class="user-details">
+				<text class="user-name">欢迎使用TripSelf</text>
+				<text class="user-welcome">开始规划您的完美旅程</text>
+			</view>
+		</view>
+	</view>
+	
+	<!-- 英雄区域 -->
+	<view class="header-bg">
+		<view class="header-content">
+			<text class="app-title">发现你的专属旅行方式</text>
+			<text class="app-subtitle">TripSelf - 旅行自助服务平台</text>
+			<view class="hero-buttons">
+				<button class="start-planning-btn" bindtap="startPlanning" hover-class="button-hover">
+					<text>✏️ 开始制作攻略</text>
+				</button>
+			</view>
+		</view>
+	</view>
+	
+	<!-- 主要内容区域 -->
+	<view class="main-content">
+		<!-- 制作攻略引导区域 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">开始你的旅行规划</text>
+			</view>
+			<view class="planning-guide">
+				<view class="guide-item" bindtap="startPlanning" hover-class="guide-item-hover">
+					<view class="guide-icon">📝</view>
+					<view class="guide-content">
+						<text class="guide-title">创建新攻略</text>
+						<text class="guide-desc">从零开始规划你的完美旅程</text>
+					</view>
+				</view>
+				<view class="guide-item" bindtap="viewMyPlans" hover-class="guide-item-hover">
+					<view class="guide-icon">📂</view>
+					<view class="guide-content">
+						<text class="guide-title">我的攻略</text>
+						<text class="guide-desc">查看和管理已创建的攻略</text>
+					</view>
+				</view>
+				<view class="guide-item" bindtap="viewTemplates" hover-class="guide-item-hover">
+					<view class="guide-icon">📋</view>
+					<view class="guide-content">
+						<text class="guide-title">攻略模板</text>
+						<text class="guide-desc">使用模板快速开始规划</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 攻略制作特色 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">攻略制作特色</text>
+			</view>
+			<view class="features-grid">
+				<view class="feature-item">
+					<view class="feature-icon">🗺️</view>
+					<text class="feature-title">智能路线规划</text>
+					<text class="feature-desc">自动优化行程路线，节省时间</text>
+				</view>
+				<view class="feature-item">
+					<view class="feature-icon">💰</view>
+					<text class="feature-title">预算管理</text>
+					<text class="feature-desc">实时计算旅行费用</text>
+				</view>
+				<view class="feature-item">
+					<view class="feature-icon">📅</view>
+					<text class="feature-title">时间安排</text>
+					<text class="feature-desc">合理分配每日行程</text>
+				</view>
+				<view class="feature-item">
+					<view class="feature-icon">📱</view>
+					<text class="feature-title">多端同步</text>
+					<text class="feature-desc">随时随地查看攻略</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

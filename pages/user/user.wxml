@@ -1,0 +1,116 @@
+<!--pages/user/user.wxml-->
+<view class="user-container">
+	<!-- 用户信息头部 -->
+	<view class="user-header">
+		<view class="header-content">
+			<image class="user-avatar" src="/static/images/default-avatar.png" mode="aspectFill"></image>
+			<view class="user-info">
+				<text class="user-name">旅行爱好者</text>
+				<text class="user-level">Lv.5 资深玩家</text>
+				<text class="user-desc">热爱旅行，喜欢探索未知的世界</text>
+			</view>
+		</view>
+		<view class="user-stats">
+			<view class="stat-item">
+				<text class="stat-number">12</text>
+				<text class="stat-label">攻略</text>
+			</view>
+			<view class="stat-item">
+				<text class="stat-number">156</text>
+				<text class="stat-label">粉丝</text>
+			</view>
+			<view class="stat-item">
+				<text class="stat-number">89</text>
+				<text class="stat-label">关注</text>
+			</view>
+			<view class="stat-item">
+				<text class="stat-number">234</text>
+				<text class="stat-label">点赞</text>
+			</view>
+		</view>
+	</view>
+	
+	<!-- 主要内容区域 -->
+	<view class="main-content">
+		<!-- 我的功能 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">我的功能</text>
+			</view>
+			<view class="function-grid">
+				<view class="function-item" bindtap="viewMyPlans" hover-class="function-item-hover">
+					<view class="function-icon">📝</view>
+					<text class="function-name">我的攻略</text>
+				</view>
+				<view class="function-item" bindtap="viewMyMatches" hover-class="function-item-hover">
+					<view class="function-icon">👥</view>
+					<text class="function-name">我的搭子</text>
+				</view>
+				<view class="function-item" bindtap="viewMyPosts" hover-class="function-item-hover">
+					<view class="function-icon">📰</view>
+					<text class="function-name">我的帖子</text>
+				</view>
+				<view class="function-item" bindtap="viewMyFavorites" hover-class="function-item-hover">
+					<view class="function-icon">❤️</view>
+					<text class="function-name">我的收藏</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 设置选项 -->
+		<view class="section">
+			<view class="section-header">
+				<text class="section-title">设置</text>
+			</view>
+			<view class="settings-list">
+				<view class="setting-item" bindtap="editProfile" hover-class="setting-item-hover">
+					<view class="setting-left">
+						<view class="setting-icon">👤</view>
+						<text class="setting-name">编辑资料</text>
+					</view>
+					<text class="setting-arrow">></text>
+				</view>
+				<view class="setting-item" bindtap="accountSettings" hover-class="setting-item-hover">
+					<view class="setting-left">
+						<view class="setting-icon">⚙️</view>
+						<text class="setting-name">账号设置</text>
+					</view>
+					<text class="setting-arrow">></text>
+				</view>
+				<view class="setting-item" bindtap="notificationSettings" hover-class="setting-item-hover">
+					<view class="setting-left">
+						<view class="setting-icon">🔔</view>
+						<text class="setting-name">通知设置</text>
+					</view>
+					<text class="setting-arrow">></text>
+				</view>
+				<view class="setting-item" bindtap="privacySettings" hover-class="setting-item-hover">
+					<view class="setting-left">
+						<view class="setting-icon">🔒</view>
+						<text class="setting-name">隐私设置</text>
+					</view>
+					<text class="setting-arrow">></text>
+				</view>
+				<view class="setting-item" bindtap="helpCenter" hover-class="setting-item-hover">
+					<view class="setting-left">
+						<view class="setting-icon">❓</view>
+						<text class="setting-name">帮助中心</text>
+					</view>
+					<text class="setting-arrow">></text>
+				</view>
+				<view class="setting-item" bindtap="aboutApp" hover-class="setting-item-hover">
+					<view class="setting-left">
+						<view class="setting-icon">ℹ️</view>
+						<text class="setting-name">关于TripSelf</text>
+					</view>
+					<text class="setting-arrow">></text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 退出登录 -->
+		<view class="logout-section">
+			<button class="logout-btn" bindtap="logout">退出登录</button>
+		</view>
+	</view>
+</view>

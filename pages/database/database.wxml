@@ -1,0 +1,21 @@
+<!--pages/database/database.wxml-->
+<view class="database-container">
+	<view class="header">
+		<text class="title">数据库管理</text>
+		<text class="subtitle">管理旅行数据和配置</text>
+	</view>
+	
+	<view class="database-content">
+		<view class="placeholder-database">
+			<text class="database-icon">🗄️</text>
+			<text class="database-text">数据库管理</text>
+			<text class="database-desc">这里将显示数据库管理功能</text>
+		</view>
+	</view>
+	
+	<view class="action-buttons">
+		<button class="action-btn" bindtap="goBack">
+			<text>返回</text>
+		</button>
+	</view>
+</view>

@@ -1,0 +1,38 @@
+<!--pages/publish/publish.wxml-->
+<view class="publish-container">
+	<view class="header">
+		<text class="title">发布帖子</text>
+		<text class="subtitle">分享你的旅行经验和心得</text>
+	</view>
+	
+	<view class="form-content">
+		<view class="form-group">
+			<text class="label">帖子标题</text>
+			<input class="input" placeholder="请输入帖子标题" value="{{postTitle}}" />
+		</view>
+		
+		<view class="form-group">
+			<text class="label">帖子内容</text>
+			<textarea class="textarea" placeholder="请输入帖子内容" value="{{postContent}}" />
+		</view>
+		
+		<view class="form-group">
+			<text class="label">添加图片</text>
+			<view class="image-upload">
+				<view class="upload-btn" bindtap="chooseImage">
+					<text class="upload-icon">📷</text>
+					<text class="upload-text">选择图片</text>
+				</view>
+			</view>
+		</view>
+	</view>
+	
+	<view class="action-buttons">
+		<button class="publish-btn" bindtap="publishPost">
+			<text>发布帖子</text>
+		</button>
+		<button class="cancel-btn" bindtap="goBack">
+			<text>取消</text>
+		</button>
+	</view>
+</view>

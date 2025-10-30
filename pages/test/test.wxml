@@ -1,0 +1,21 @@
+<!--pages/test/test.wxml-->
+<view class="test-container">
+	<view class="header">
+		<text class="title">连接测试</text>
+		<text class="subtitle">测试系统连接和功能</text>
+	</view>
+	
+	<view class="test-content">
+		<view class="placeholder-test">
+			<text class="test-icon">🔧</text>
+			<text class="test-text">连接测试</text>
+			<text class="test-desc">这里将显示系统测试功能</text>
+		</view>
+	</view>
+	
+	<view class="action-buttons">
+		<button class="action-btn" bindtap="goBack">
+			<text>返回</text>
+		</button>
+	</view>
+</view>

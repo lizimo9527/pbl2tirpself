@@ -1,0 +1,61 @@
+<!--pages/my-plans/my-plans.wxml-->
+<view class="my-plans-container">
+	<!-- 页面头部 -->
+	<view class="my-plans-header">
+		<view class="header-content">
+			<text class="page-title">我的攻略</text>
+			<text class="page-subtitle">查看和管理已创建的攻略</text>
+		</view>
+	</view>
+	
+	<!-- 筛选标签 -->
+	<view class="filter-section">
+		<scroll-view class="filter-scroll" scroll-x="true">
+			<view class="filter-tags">
+				<text class="filter-tag {{currentFilter === 'all' ? 'active' : ''}}" bindtap="filterPlans" data-filter="all">全部</text>
+				<text class="filter-tag {{currentFilter === 'published' ? 'active' : ''}}" bindtap="filterPlans" data-filter="published">已发布</text>
+				<text class="filter-tag {{currentFilter === 'draft' ? 'active' : ''}}" bindtap="filterPlans" data-filter="draft">草稿</text>
+				<text class="filter-tag {{currentFilter === 'favorite' ? 'active' : ''}}" bindtap="filterPlans" data-filter="favorite">收藏</text>
+			</view>
+		</scroll-view>
+	</view>
+	
+	<!-- 攻略列表 -->
+	<view class="main-content">
+		<view class="plans-list">
+			<view class="plan-item" wx:for="{{plansList}}" wx:key="id" bindtap="viewPlanDetail" data-plan="{{item.id}}">
+				<view class="plan-header">
+					<text class="plan-title">{{item.title}}</text>
+					<text class="plan-status {{item.status}}">{{item.statusText}}</text>
+				</view>
+				<view class="plan-info">
+					<text class="plan-destination">📍 {{item.destination}}</text>
+					<text class="plan-date">📅 {{item.createTime}}</text>
+				</view>
+				<view class="plan-stats">
+					<text class="plan-stat">👁️ {{item.views}} 浏览</text>
+					<text class="plan-stat">❤️ {{item.likes}} 点赞</text>
+					<text class="plan-stat">💬 {{item.comments}} 评论</text>
+				</view>
+				<view class="plan-actions">
+					<button class="action-btn edit-btn" bindtap="editPlan" data-plan="{{item.id}}">编辑</button>
+					<button class="action-btn delete-btn" bindtap="deletePlan" data-plan="{{item.id}}">删除</button>
+					<button class="action-btn share-btn" bindtap="sharePlan" data-plan="{{item.id}}">分享</button>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 空状态 -->
+		<view class="empty-state" wx:if="{{plansList.length === 0}}">
+			<view class="empty-icon">📂</view>
+			<text class="empty-text">暂无攻略</text>
+			<text class="empty-desc">开始创建您的第一个旅行攻略吧</text>
+			<button class="create-btn" bindtap="createNewPlan">创建新攻略</button>
+		</view>
+	</view>
+	
+	<!-- 创建按钮 -->
+	<view class="create-fab" bindtap="createNewPlan">
+		<text class="fab-icon">+</text>
+	</view>
+</view>

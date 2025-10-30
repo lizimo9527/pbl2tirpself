@@ -1,0 +1,62 @@
+<!--pages/templates/templates.wxml-->
+<view class="templates-container">
+	<!-- 页面头部 -->
+	<view class="templates-header">
+		<view class="header-content">
+			<text class="page-title">攻略模板</text>
+			<text class="page-subtitle">选择模板快速创建攻略</text>
+		</view>
+	</view>
+	
+	<!-- 搜索栏 -->
+	<view class="search-section">
+		<view class="search-container">
+			<input class="search-input" placeholder="搜索模板..." bindinput="onSearchInput" value="{{searchText}}" />
+			<button class="search-btn" bindtap="searchTemplates">搜索</button>
+		</view>
+	</view>
+	
+	<!-- 模板分类 -->
+	<view class="category-section">
+		<scroll-view class="category-scroll" scroll-x="true">
+			<view class="category-tags">
+				<text class="category-tag {{currentCategory === 'all' ? 'active' : ''}}" bindtap="filterTemplates" data-category="all">全部</text>
+				<text class="category-tag {{currentCategory === 'domestic' ? 'active' : ''}}" bindtap="filterTemplates" data-category="domestic">国内游</text>
+				<text class="category-tag {{currentCategory === 'overseas' ? 'active' : ''}}" bindtap="filterTemplates" data-category="overseas">出境游</text>
+				<text class="category-tag {{currentCategory === 'self-driving' ? 'active' : ''}}" bindtap="filterTemplates" data-category="self-driving">自驾游</text>
+				<text class="category-tag {{currentCategory === 'backpacking' ? 'active' : ''}}" bindtap="filterTemplates" data-category="backpacking">背包客</text>
+				<text class="category-tag {{currentCategory === 'food' ? 'active' : ''}}" bindtap="filterTemplates" data-category="food">美食之旅</text>
+			</view>
+		</scroll-view>
+	</view>
+	
+	<!-- 模板列表 -->
+	<view class="main-content">
+		<view class="templates-grid">
+			<view class="template-item" wx:for="{{templatesList}}" wx:key="id" bindtap="useTemplate" data-template="{{item.id}}">
+				<view class="template-image">
+					<image src="{{item.image}}" mode="aspectFill" class="template-img"></image>
+					<view class="template-category">{{item.category}}</view>
+				</view>
+				<view class="template-content">
+					<text class="template-title">{{item.title}}</text>
+					<text class="template-desc">{{item.description}}</text>
+					<view class="template-stats">
+						<text class="template-stat">⭐ {{item.rating}}</text>
+						<text class="template-stat">👥 {{item.usageCount}} 人使用</text>
+					</view>
+					<view class="template-tags">
+						<text class="template-tag" wx:for="{{item.tags}}" wx:key="index">{{item}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 空状态 -->
+		<view class="empty-state" wx:if="{{templatesList.length === 0}}">
+			<view class="empty-icon">📋</view>
+			<text class="empty-text">暂无模板</text>
+			<text class="empty-desc">更多模板正在开发中...</text>
+		</view>
+	</view>
+</view>

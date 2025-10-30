@@ -1,0 +1,218 @@
+
+.edit-container {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		background-color: #ffffff;
+		padding: 30rpx;
+}
+.edit-header {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		margin-bottom: 30rpx;
+}
+.header-actions {
+		display: flex;
+		gap: 15rpx;
+}
+.action-btn {
+		padding: 12rpx 20rpx;
+		border-radius: 8rpx;
+		font-size: 24rpx;
+		font-weight: bold;
+		border: none;
+}
+.save-btn {
+		background: #f8f9fa;
+		color: #666;
+		border: 1rpx solid #e5e5e5;
+}
+.publish-btn {
+		background: #1A9E8F;
+		color: white;
+}
+.edit-content {
+		flex: 1;
+		height: calc(100vh - 120rpx);
+}
+.form-section {
+		flex: 1;
+}
+.form-item {
+		margin-bottom: 40rpx;
+}
+.form-label {
+		display: block;
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 15rpx;
+}
+.form-input {
+		width: 100%;
+		height: 80rpx;
+		padding: 0 20rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		background-color: #f9f9f9;
+}
+.form-textarea {
+		width: 100%;
+		height: 200rpx;
+		padding: 20rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		background-color: #f9f9f9;
+}
+
+	/* 地图模块样式 */
+.map-section-header {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 15rpx;
+}
+.map-controls {
+		display: flex;
+		flex-direction: column;
+		gap: 15rpx;
+		margin-top: 15rpx;
+}
+.map-control-btn {
+		background-color: #1A9E8F;
+		color: white;
+		border-radius: 8rpx;
+		padding: 15rpx 20rpx;
+		font-size: 28rpx;
+		border: none;
+}
+.map-container {
+		position: relative;
+		height: 400rpx;
+		border-radius: 10rpx;
+		overflow: hidden;
+		border: 2rpx solid #e5e5e5;
+}
+.tencent-map {
+		width: 100%;
+		height: 100%;
+}
+.map-loading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: rgba(255, 255, 255, 0.9);
+		z-index: 10;
+}
+.loading-text {
+		font-size: 28rpx;
+		color: #666;
+}
+.map-coordinates {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: rgba(0, 0, 0, 0.7);
+		color: white;
+		padding: 15rpx;
+		font-size: 24rpx;
+		z-index: 5;
+}
+.coordinate-text {
+		display: block;
+		margin-bottom: 5rpx;
+}
+.image-upload {
+		display: flex;
+		align-items: center;
+}
+.upload-btn {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 150rpx;
+		height: 150rpx;
+		border: 2rpx dashed #e5e5e5;
+		border-radius: 10rpx;
+		background-color: #f9f9f9;
+}
+.upload-icon {
+		font-size: 48rpx;
+		color: #999999;
+		margin-bottom: 10rpx;
+}
+.upload-text {
+		font-size: 24rpx;
+		color: #999999;
+}
+.image-preview {
+		position: relative;
+		margin-left: 20rpx;
+}
+.preview-image {
+		width: 150rpx;
+		height: 150rpx;
+		border-radius: 10rpx;
+}
+.remove-btn {
+		position: absolute;
+		top: -10rpx;
+		right: -10rpx;
+		width: 40rpx;
+		height: 40rpx;
+		background-color: #ff4444;
+		color: white;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 24rpx;
+		font-weight: bold;
+}
+.tags-container {
+		display: flex;
+		flex-direction: column;
+}
+.tag-input-container {
+		margin-bottom: 20rpx;
+}
+.tag-input {
+		width: 100%;
+		height: 60rpx;
+		padding: 0 20rpx;
+		border: 2rpx solid #e5e5e5;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		background-color: #f9f9f9;
+}
+.tags-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15rpx;
+}
+.tag-item {
+		display: flex;
+		align-items: center;
+		padding: 10rpx 20rpx;
+		background-color: #1A9E8F;
+		border-radius: 20rpx;
+		color: white;
+}
+.tag-text {
+		font-size: 24rpx;
+		margin-right: 10rpx;
+}
+.tag-remove {
+		font-size: 20rpx;
+		font-weight: bold;
+		cursor: pointer;
+}

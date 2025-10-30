@@ -1,0 +1,21 @@
+<!--pages/map/map.wxml-->
+<view class="map-container">
+	<view class="header">
+		<text class="title">地图导航</text>
+		<text class="subtitle">查看旅行路线和目的地</text>
+	</view>
+	
+	<view class="map-content">
+		<view class="placeholder-map">
+			<text class="map-icon">🗺️</text>
+			<text class="map-text">地图功能</text>
+			<text class="map-desc">这里将显示旅行路线和目的地地图</text>
+		</view>
+	</view>
+	
+	<view class="action-buttons">
+		<button class="action-btn" bindtap="goBack">
+			<text>返回首页</text>
+		</button>
+	</view>
+</view>

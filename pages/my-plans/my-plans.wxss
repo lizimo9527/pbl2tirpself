@@ -1,0 +1,216 @@
+.my-plans-container {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: #f5f5f5;
+}
+
+.my-plans-header {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	padding: 60rpx 30rpx 40rpx;
+	color: white;
+}
+
+.header-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.page-title {
+	font-size: 48rpx;
+	font-weight: bold;
+	margin-bottom: 15rpx;
+}
+
+.page-subtitle {
+	font-size: 28rpx;
+	opacity: 0.9;
+}
+
+.filter-section {
+	background-color: #ffffff;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #eeeeee;
+}
+
+.filter-scroll {
+	white-space: nowrap;
+}
+
+.filter-tags {
+	display: inline-flex;
+	gap: 20rpx;
+}
+
+.filter-tag {
+	padding: 15rpx 30rpx;
+	background-color: #f8f9fa;
+	border-radius: 25rpx;
+	font-size: 26rpx;
+	color: #666666;
+	border: 1rpx solid #e9ecef;
+}
+
+.filter-tag.active {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border-color: #667eea;
+}
+
+.main-content {
+	padding: 40rpx 30rpx;
+}
+
+.plans-list {
+	display: flex;
+	flex-direction: column;
+	gap: 25rpx;
+}
+
+.plan-item {
+	background-color: #ffffff;
+	border-radius: 15rpx;
+	padding: 30rpx;
+	border: 1rpx solid #eeeeee;
+}
+
+.plan-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.plan-title {
+	font-size: 30rpx;
+	font-weight: bold;
+	color: #333333;
+	flex: 1;
+}
+
+.plan-status {
+	font-size: 22rpx;
+	padding: 5rpx 15rpx;
+	border-radius: 12rpx;
+}
+
+.plan-status.published {
+	background-color: #f6ffed;
+	color: #52c41a;
+	border: 1rpx solid #b7eb8f;
+}
+
+.plan-status.draft {
+	background-color: #fff7e6;
+	color: #fa8c16;
+	border: 1rpx solid #ffd591;
+}
+
+.plan-info {
+	display: flex;
+	gap: 20rpx;
+	margin-bottom: 15rpx;
+}
+
+.plan-destination, .plan-date {
+	font-size: 24rpx;
+	color: #666666;
+}
+
+.plan-stats {
+	display: flex;
+	gap: 20rpx;
+	margin-bottom: 20rpx;
+}
+
+.plan-stat {
+	font-size: 22rpx;
+	color: #999999;
+}
+
+.plan-actions {
+	display: flex;
+	gap: 15rpx;
+}
+
+.action-btn {
+	flex: 1;
+	height: 60rpx;
+	border-radius: 8rpx;
+	font-size: 26rpx;
+}
+
+.edit-btn {
+	background-color: #1890ff;
+	color: white;
+	border: none;
+}
+
+.delete-btn {
+	background-color: #ff4d4f;
+	color: white;
+	border: none;
+}
+
+.share-btn {
+	background-color: #52c41a;
+	color: white;
+	border: none;
+}
+
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 80rpx 30rpx;
+}
+
+.empty-icon {
+	font-size: 120rpx;
+	margin-bottom: 30rpx;
+}
+
+.empty-text {
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #333333;
+	margin-bottom: 15rpx;
+}
+
+.empty-desc {
+	font-size: 26rpx;
+	color: #666666;
+	margin-bottom: 40rpx;
+}
+
+.create-btn {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border: none;
+	border-radius: 10rpx;
+	padding: 20rpx 40rpx;
+	font-size: 28rpx;
+}
+
+.create-fab {
+	position: fixed;
+	right: 40rpx;
+	bottom: 40rpx;
+	width: 100rpx;
+	height: 100rpx;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+
+.fab-icon {
+	font-size: 40rpx;
+	color: white;
+	font-weight: bold;
+}

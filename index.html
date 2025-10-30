@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发现你的专属旅行方式 - 旅行探索</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!-- Vue Router -->
+  <script src="https://unpkg.com/vue-router@4"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1A9E8F',
+            secondary: '#F5F5F5',
+            dark: '#333333',
+            light: '#FFFFFF',
+            gray: '#666666'
+          },
+          fontFamily: {
+            sans: ['Arial', 'PingFang SC', 'Microsoft YaHei', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+    
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      color: #333333;
+    }
+    
+    .hero-section {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://p11-doubao-search-sign.byteimg.com/pgc-image/e7498e2713ce44a4b1b8bcdacda5c158~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776668925&x-signature=V0iukzevD2XMyE%2BDUXfmjY4aPLM%3D');
+      background-size: cover;
+      background-position: center;
+      height: 500px;
+    }
+    
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .destination-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .search-btn {
+      background-color: #1A9E8F;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .search-btn:hover {
+      background-color: #157d6f;
+    }
+    
+    .nav-link {
+      position: relative;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #1A9E8F;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .start-planning-btn {
+      background-color: #1A9E8F;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .start-planning-btn:hover {
+      background-color: #157d6f;
+      transform: translateY(-2px);
+    }
+    
+    .outline-btn {
+      border: 2px solid #1A9E8F;
+      color: #1A9E8F;
+      transition: all 0.3s ease;
+    }
+    
+    .outline-btn:hover {
+      background-color: #1A9E8F;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md py-4">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <a href="#" class="text-2xl font-bold text-primary">旅行探索</a>
+        </div>
+        
+        <div class="hidden md:flex space-x-8">
+          <a href="#" class="nav-link text-dark hover:text-primary">首页</a>
+          <a href="#" class="nav-link text-dark hover:text-primary">目的地</a>
+          <a href="#" class="nav-link text-dark hover:text-primary">旅行攻略</a>
+          <a href="#" class="nav-link text-dark hover:text-primary">关于我们</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <button class="text-dark hover:text-primary">
+            <i class="fa fa-search text-lg"></i>
+          </button>
+          <button class="text-dark hover:text-primary">
+            <i class="fa fa-user text-lg"></i>
+          </button>
+          <button class="md:hidden text-dark hover:text-primary" @click="toggleMenu">
+            <i class="fa fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 移动端菜单 -->
+      <div v-if="mobileMenuOpen" class="md:hidden bg-white shadow-md py-4 px-4">
+        <div class="flex flex-col space-y-4">
+          <a href="#" class="text-dark hover:text-primary">首页</a>
+          <a href="#" class="text-dark hover:text-primary">目的地</a>
+          <a href="#" class="text-dark hover:text-primary">旅行攻略</a>
+          <a href="#" class="text-dark hover:text-primary">关于我们</a>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- 英雄区域 -->
+    <section class="hero-section flex items-center justify-center">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">发现你的专属旅行方式</h1>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <button class="start-planning-btn px-8 py-3 rounded-md font-medium text-lg" @click="startPlanning">
+            <i class="fa fa-pencil-square-o mr-2"></i>开始制作攻略
+          </button>
+          <button class="community-btn px-8 py-3 rounded-md font-medium text-lg bg-white text-primary hover:bg-primary hover:text-white transition-all duration-300" @click="browseCommunity">
+            <i class="fa fa-users mr-2"></i>浏览社区
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 分类区域 -->
+    <section class="py-12">
+      <div class="container mx-auto px-4">
+        <!-- 热门分类 -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-bold text-center mb-8">热门分类</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="category-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showCategory('文化')">
+              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-university text-orange-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">饮食</h3>
+            </div>
+            
+            <div class="category-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showCategory('海滩')">
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-umbrella-beach text-blue-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">交通</h3>
+            </div>
+            
+            <div class="category-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showCategory('都市')">
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-building text-purple-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">住宿</h3>
+            </div>
+            
+            <div class="category-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showCategory('自然')">
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-tree text-green-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">景点</h3>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 旅行风格 -->
+        <div>
+          <h2 class="text-2xl font-bold text-center mb-8">旅行风格</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="style-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showStyle('休闲度假')">
+              <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-coffee text-teal-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">特种兵式</h3>
+              <p class="text-sm text-gray-500 mt-1">高效打卡</p>
+            </div>
+            
+            <div class="style-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showStyle('探险旅行')">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-compass text-indigo-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">拍照打卡式</h3>
+              <p class="text-sm text-gray-500 mt-1">记录美好</p>
+            </div>
+            
+            <div class="style-card bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer" @click="showStyle('亲子旅行')">
+              <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa fa-child text-pink-500 text-xl"></i>
+              </div>
+              <h3 class="font-medium">细品慢游式</h3>
+              <p class="text-sm text-gray-500 mt-1">体验感至上</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 推荐精选攻略 -->
+    <section class="py-12 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-2xl font-bold">推荐精选攻略</h2>
+          <a href="#" class="text-primary hover:underline flex items-center">
+            查看更多 <i class="fa fa-angle-right ml-1"></i>
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="guide-card bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300" v-for="(guide, index) in featuredGuides" :key="index">
+            <div class="relative">
+              <img :src="guide.image" alt="攻略封面" class="w-full h-48 object-cover">
+              <div class="absolute top-4 left-4 bg-white text-primary text-sm px-2 py-1 rounded-md">
+                {{ guide.category }}
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-lg mb-2 line-clamp-2">{{ guide.title }}</h3>
+              <div class="flex items-center text-gray-500 text-sm mb-4">
+                <img :src="guide.authorAvatar" alt="作者头像" class="w-6 h-6 rounded-full mr-2">
+                <span>{{ guide.authorName }}</span>
+                <span class="mx-2">·</span>
+                <span>{{ guide.readCount }}阅读</span>
+              </div>
+              <p class="text-gray mb-4 line-clamp-2">{{ guide.excerpt }}</p>
+              <div class="flex justify-between items-center">
+                <div class="flex items-center text-gray-500 text-sm">
+                  <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded mr-2">{{ guide.days }}天</span>
+                  <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded">{{ guide.season }}</span>
+                </div>
+                <button class="text-primary hover:underline" @click="viewGuide(guide.id)">查看详情</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 开始规划旅行 -->
+    <section class="py-16 bg-primary text-white">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-6">开始你的旅行规划</h2>
+        <p class="text-lg mb-8 max-w-2xl mx-auto">
+          无论你是寻求冒险、放松还是文化体验，我们都能帮助你找到完美的旅行方案。
+          立即开始规划你的下一次旅行！
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <button class="start-planning-btn px-8 py-3 rounded-md font-medium">
+            开始规划
+          </button>
+          <button class="outline-btn px-8 py-3 rounded-md font-medium">
+            了解更多
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-xl font-bold mb-4">旅行探索</h3>
+            <p class="text-gray-400">
+              发现世界各地的美丽风景和独特文化，
+              让我们一起探索这个精彩的世界。
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-bold mb-4">快速链接</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white">首页</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">目的地</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">旅行攻略</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">关于我们</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-bold mb-4">热门目的地</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white">巴塞罗那</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">巴厘岛</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">东京</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">巴黎</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-bold mb-4">联系我们</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center">
+                <i class="fa fa-map-marker mr-2 text-primary"></i>
+                <span class="text-gray-400">北京市朝阳区建国路88号</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-phone mr-2 text-primary"></i>
+                <span class="text-gray-400">+86 10 8888 8888</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-envelope mr-2 text-primary"></i>
+                <span class="text-gray-400">info@travelexplorer.com</span>
+              </li>
+            </ul>
+            <div class="flex space-x-4 mt-4">
+              <a href="#" class="text-gray-400 hover:text-primary">
+                <i class="fa fa-weixin text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary">
+                <i class="fa fa-weibo text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary">
+                <i class="fa fa-instagram text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-primary">
+                <i class="fa fa-facebook text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <p>&copy; 2025 旅行探索. 保留所有权利.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // 创建Vue应用
+    const { createApp } = Vue;
+    
+    createApp({
+      data() {
+        return {
+          mobileMenuOpen: false,
+          featuredGuides: [
+            {
+              id: 1,
+              title: "巴塞罗那深度游：高迪建筑与地中海风情",
+              image: "https://p11-doubao-search-sign.byteimg.com/pgc-image/e7498e2713ce44a4b1b8bcdacda5c158~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776668925&x-signature=V0iukzevD2XMyE%2BDUXfmjY4aPLM%3D",
+              category: "文化",
+              authorAvatar: "https://p3-doubao-search-sign.byteimg.com/labis/cfb7c58e658eca15bf5de16a2673ef52~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776669893&x-signature=f5jZ9mOIhbWDvjdbY20MM4OcRlg%3D",
+              authorName: "旅行达人小明",
+              readCount: "2.3万",
+              excerpt: "探索高迪的建筑奇迹，感受巴塞罗那独特的艺术氛围，漫步哥特区，品尝地道的西班牙海鲜饭...",
+              days: 5,
+              season: "春季"
+            },
+            {
+              id: 2,
+              title: "巴厘岛度假指南：海滩、寺庙与美食之旅",
+              image: "https://p3-doubao-search-sign.byteimg.com/labis/2a940890903ce1a41735f97f46f194c1~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776668925&x-signature=1ZuMkdNtqIN8y4oAdctzOZKuBxw%3D",
+              category: "海滩",
+              authorAvatar: "https://p3-doubao-search-sign.byteimg.com/labis/a9b0ec27e751f6cc2d0286acdb1e8e82~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776669893&x-signature=BfOENNajSNETTngVSYu6r6UvUQc%3D",
+              authorName: "阳光旅行者",
+              readCount: "1.8万",
+              excerpt: "巴厘岛不仅有美丽的海滩，还有神圣的寺庙和丰富的文化体验。本攻略带你领略巴厘岛的多元魅力...",
+              days: 7,
+              season: "冬季"
+            },
+            {
+              id: 3,
+              title: "东京7日游：传统与现代的完美融合",
+              image: "https://p3-doubao-search-sign.byteimg.com/labis/4585a7157d64000775721697f884d36~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776668925&x-signature=R7588I11a7k71GQd%2BwM3v0bQ3w8%3D",
+              category: "都市",
+              authorAvatar: "https://p3-doubao-search-sign.byteimg.com/labis/image/d17f8f48f8d36ad20772c4f16ae2dc4e~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1776669893&x-signature=B7onXFfi2tUHBCUFt9osqZHKaJE%3D",
+              authorName: "城市探索者",
+              readCount: "3.1万",
+              excerpt: "从传统的寺庙到现代的摩天大楼，从宁静的公园到繁忙的购物区，东京之旅将带给你无尽的惊喜...",
+              days: 6,
+              season: "秋季"
+            }
+          ]
+        };
+      },
+      computed: {
+      },
+      methods: {
+        toggleMenu() {
+          this.mobileMenuOpen = !this.mobileMenuOpen;
+        },
+        showCategory(category) {
+          alert(`你选择了${category}分类`);
+        },
+        showStyle(style) {
+          alert(`你选择了${style}风格`);
+        },
+        startPlanning() {
+          alert('开始制作你的专属旅行攻略！');
+        },
+        browseCommunity() {
+          alert('欢迎来到旅行社区，探索更多精彩内容！');
+        },
+        viewGuide(id) {
+          const guide = this.featuredGuides.find(g => g.id === id);
+          if (guide) {
+            alert(`正在查看《${guide.title}》的详细攻略...`);
+          }
+        },
+        prevSlide() {
+          if (this.currentSlide > 0) {
+            this.currentSlide--;
+          }
+        },
+        nextSlide() {
+          if (this.currentSlide < this.destinations.length - 1) {
+            this.currentSlide++;
+          }
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

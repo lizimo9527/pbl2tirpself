@@ -1,0 +1,215 @@
+
+.map-container {
+		min-height: 100vh;
+		background-color: #f5f7fa;
+		display: flex;
+		flex-direction: column;
+}
+.header {
+		text-align: center;
+		padding: 30rpx 30rpx 20rpx;
+		background: linear-gradient(135deg, #1A9E8F 0%, #2ECC71 100%);
+		color: white;
+}
+.title {
+		font-size: 36rpx;
+		font-weight: bold;
+		display: block;
+		margin-bottom: 8rpx;
+}
+.subtitle {
+		font-size: 24rpx;
+		opacity: 0.9;
+		display: block;
+}
+	
+	/* 地图控件样式 */
+.map-controls {
+		display: flex;
+		justify-content: space-around;
+		padding: 20rpx 30rpx;
+		background-color: white;
+		border-bottom: 1rpx solid #e5e5e5;
+}
+.control-btn {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		background: none;
+		border: none;
+		padding: 15rpx 25rpx;
+		border-radius: 15rpx;
+		transition: all 0.3s;
+}
+.control-btn:active {
+		background-color: #f8f9fa;
+		transform: scale(0.95);
+}
+.control-icon {
+		font-size: 36rpx;
+		margin-bottom: 8rpx;
+}
+.control-text {
+		font-size: 22rpx;
+		color: #666;
+}
+	
+	/* 地图内容区域 */
+.map-content {
+		flex: 1;
+		position: relative;
+}
+.tencent-map {
+		width: 100%;
+		height: 100%;
+}
+	
+	/* 地图加载状态 */
+.map-loading {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: rgba(255, 255, 255, 0.9);
+		padding: 30rpx 50rpx;
+		border-radius: 20rpx;
+		box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+		z-index: 10;
+}
+.loading-text {
+		font-size: 28rpx;
+		color: #666;
+}
+	
+	/* 位置信息显示 */
+.location-info {
+		background-color: white;
+		padding: 25rpx 30rpx;
+		border-top: 1rpx solid #e5e5e5;
+}
+.location-title {
+		font-size: 26rpx;
+		font-weight: bold;
+		color: #333;
+		display: block;
+		margin-bottom: 10rpx;
+}
+.location-address {
+		font-size: 24rpx;
+		color: #666;
+		display: block;
+		margin-bottom: 8rpx;
+}
+.location-coords {
+		font-size: 20rpx;
+		color: #999;
+		display: block;
+}
+	
+	/* 操作按钮 */
+.action-buttons {
+		padding: 20rpx 30rpx;
+		background-color: white;
+		border-top: 1rpx solid #e5e5e5;
+}
+.action-btn {
+		background-color: #1A9E8F;
+		color: white;
+		border-radius: 10rpx;
+		padding: 25rpx;
+		font-size: 28rpx;
+		font-weight: bold;
+		width: 100%;
+}
+	
+	/* 搜索模态框样式 */
+.modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1000;
+}
+.modal-content {
+		background-color: white;
+		border-radius: 20rpx;
+		width: 90%;
+		max-width: 600rpx;
+		max-height: 80%;
+		overflow: hidden;
+}
+.modal-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 30rpx;
+		border-bottom: 1rpx solid #eee;
+}
+.modal-title {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #333;
+}
+.close-btn {
+		background: none;
+		border: none;
+		font-size: 40rpx;
+		color: #999;
+		padding: 0;
+		width: 60rpx;
+		height: 60rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+}
+.search-input {
+		padding: 30rpx;
+		display: flex;
+		gap: 15rpx;
+}
+.search-field {
+		flex: 1;
+		border: 1rpx solid #ddd;
+		border-radius: 10rpx;
+		padding: 20rpx;
+		font-size: 26rpx;
+}
+.search-btn {
+		background-color: #1A9E8F;
+		color: white;
+		border-radius: 10rpx;
+		padding: 20rpx 30rpx;
+		font-size: 26rpx;
+}
+.search-results {
+		max-height: 400rpx;
+		overflow-y: auto;
+		padding: 0 30rpx 30rpx;
+}
+.search-result {
+		padding: 20rpx;
+		border-bottom: 1rpx solid #eee;
+		transition: background-color 0.3s;
+}
+.search-result:last-child {
+		border-bottom: none;
+}
+.search-result:active {
+		background-color: #f8f9fa;
+}
+.result-name {
+		font-size: 26rpx;
+		font-weight: bold;
+		color: #333;
+		display: block;
+		margin-bottom: 5rpx;
+}
+.result-address {
+		font-size: 22rpx;
+		color: #666;
+}
