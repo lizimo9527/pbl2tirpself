@@ -100,7 +100,7 @@
 </template>
 
 <script>
-	import difyChatService from '@/services/difyChatService.js';
+
 
 	export default {
 		data() {
@@ -117,7 +117,8 @@
 		},
 		methods: {
 			// 发送消息
-			sendMessage() {
+			// 发送消息
+		sendMessage() {
 				if (!this.inputMessage.trim() || this.isAIThinking) return;
 
 				// 添加用户消息
