@@ -9,8 +9,10 @@ const _sfc_main = {
       scrollTop: 0,
       showGenerateButton: false,
       aiResponse: "",
-      destinationData: null
+      destinationData: null,
       // 存储目的地和地图标记数据
+      aiPlanData: null
+      // 存储完整的AI生成的攻略数据
     };
   },
   methods: {
@@ -30,9 +32,7 @@ const _sfc_main = {
       this.$nextTick(() => {
         this.scrollToBottom();
       });
-      setTimeout(() => {
-        this.generateAIResponse(message);
-      }, 1500);
+      this.generateAIResponse(message);
     },
     // 生成AI回复
     generateAIResponse(userMessage) {

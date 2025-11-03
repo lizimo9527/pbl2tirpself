@@ -140,108 +140,118 @@
 					this.scrollToBottom();
 				});
 
-				// 调用Dify聊天服务生成AI回复
+				// 调用n8n工作流生成AI回复
 				this.generateAIResponse(message);
 			},
 
-			// 生成AI回复
-			generateAIResponse(userMessage) {
-				let response = {
-					type: 'ai',
-					content: '',
-					time: this.getCurrentTime()
-				};
+			// 生成AI回复（使用Dify工作流）
+			async generateAIResponse(userMessage) {
+				try {
+					// 解析用户输入
+					const userInput = difyService.parseUserInput(userMessage);
+					
+					// 调用Dify工作流生成旅行计划
+					let aiResult;
+					try {
+						aiResult = await difyService.generateTravelPlan(userInput);
+					} catch (error) {
+						// 如果Dify服务不可用，使用模拟数据
+						console.warn('Dify服务不可用，使用模拟数据:', error);
+						aiResult = await difyService.mockAIResponse(userInput);
+					}
 
-				// 简单的关键词匹配回复
-				if (userMessage.includes('云南') || userMessage.includes('大理') || userMessage.includes('丽江')) {
-					response.content = '根据您的需求，我为您推荐以下云南5日游路线：\n\n' +
-					'🏔️ **Day 1：抵达昆明**\n' +
-					'- 上午：抵达昆明长水机场\n' +
-					'- 下午：游览滇池、西山龙门\n' +
-					'- 晚上：品尝过桥米线\n\n' +
-					'🏞️ **Day 2：大理古城**\n' +
-					'- 上午：动车前往大理，游览大理古城\n' +
-					'- 下午：环洱海骑行，欣赏苍山洱海\n' +
-					'- 晚上：古城酒吧街体验\n\n' +
-					'🏯 **Day 3-4：丽江古城**\n' +
-					'- 游览丽江古城、木府\n' +
-					'- 玉龙雪山一日游\n' +
-					'- 束河古镇休闲游\n\n' +
-					'💰 **预算建议**：8000元足够享受舒适旅程，包含机票、住宿、餐饮和景点门票。';
+					// 构建AI回复内容
+					let responseContent = '';
 					
-					// 设置目的地和地图标记数据
-					this.destinationData = {
-						destination: '云南',
-						markers: [
-							{ name: '昆明', longitude: 102.7123, latitude: 25.0406 },
-							{ name: '大理', longitude: 100.2676, latitude: 25.6065 },
-							{ name: '丽江', longitude: 100.2330, latitude: 26.8721 }
-						]
+					if (aiResult.success && aiResult.plan) {
+						const plan = aiResult.plan;
+						
+						// 生成详细的旅行攻略
+						responseContent = `根据您的需求，我为您定制了以下${plan.destination}${plan.days}日游路线：\n\n`;
+						
+						// 添加行程安排
+						plan.itinerary.forEach(day => {
+							responseContent += `📅 **${day.title}**\n`;
+							day.activities.forEach(activity => {
+								responseContent += `- ${activity}\n`;
+							});
+							responseContent += '\n';
+						});
+						
+						// 添加预算建议
+						if (plan.budget) {
+							responseContent += `💰 **预算建议**：${plan.budget}元可以享受${plan.travelType || '舒适'}旅程\n\n`;
+						}
+						
+						// 添加旅行提示
+						if (plan.tips && plan.tips.length > 0) {
+							responseContent += '💡 **旅行提示**：\n';
+							plan.tips.forEach(tip => {
+								responseContent += `- ${tip}\n`;
+							});
+							responseContent += '\n';
+						}
+						
+						// 添加推荐
+						if (plan.recommendations && plan.recommendations.length > 0) {
+							responseContent += '🌟 **特别推荐**：\n';
+							plan.recommendations.forEach(rec => {
+								responseContent += `- ${rec}\n`;
+							});
+						}
+						
+						// 保存完整的AI计划数据
+						this.aiPlanData = aiResult;
+						
+						// 设置地图标记数据
+						if (aiResult.mapData) {
+							this.destinationData = aiResult.mapData;
+						}
+					} else {
+						// 如果信息不完整，请求更多信息
+						responseContent = '感谢您分享旅行想法！为了更好地为您服务，请告诉我：\n\n' +
+						'1. 具体的旅行目的地\n' +
+						'2. 出行时间（几天）\n' +
+						'3. 预算范围\n' +
+						'4. 您的兴趣偏好（自然风光/历史文化/美食/购物等）\n\n' +
+						'我会根据这些信息为您定制专属的旅行路线。';
+					}
+
+					// 创建AI回复消息
+					const response = {
+						type: 'ai',
+						content: responseContent,
+						time: this.getCurrentTime()
 					};
-				} else if (userMessage.includes('北京')) {
-					response.content = '为您推荐北京家庭轻松游路线：\n\n' +
-					'🏛️ **Day 1：天安门广场 & 故宫**\n' +
-					'- 上午：天安门广场拍照留念\n' +
-					'- 下午：游览故宫（建议预约导游讲解）\n' +
-					'- 晚上：王府井小吃街\n\n' +
-					'🐼 **Day 2：动物园 & 颐和园**\n' +
-					'- 上午：北京动物园（适合小朋友）\n' +
-					'- 下午：颐和园游船赏景\n' +
-					'- 晚上：老北京涮羊肉\n\n' +
-					'🏮 **Day 3：天坛 & 前门大街**\n' +
-					'- 上午：天坛公园晨练\n' +
-					'- 下午：前门大街购物休闲\n' +
-					'- 行程轻松，适合老人小孩';
+
+					this.aiResponse = responseContent;
+					this.messages.push(response);
+					this.isAIThinking = false;
+					this.showGenerateButton = true;
 					
-					// 设置目的地和地图标记数据
-					this.destinationData = {
-						destination: '北京',
-						markers: [
-							{ name: '天安门广场', longitude: 116.3974, latitude: 39.9093 },
-							{ name: '故宫', longitude: 116.3970, latitude: 39.9175 },
-							{ name: '颐和园', longitude: 116.2732, latitude: 39.9998 },
-							{ name: '天坛', longitude: 116.4100, latitude: 39.8822 }
-						]
-					};
-				} else if (userMessage.includes('杭州') || userMessage.includes('西湖')) {
-					response.content = '杭州周末休闲游推荐：\n\n' +
-					'🌸 **周六：西湖环湖游**\n' +
-					'- 上午：断桥残雪 → 白堤 → 孤山\n' +
-					'- 下午：苏堤春晓 → 花港观鱼\n' +
-					'- 晚上：西湖音乐喷泉\n\n' +
-					'🍵 **周日：龙井村 & 美食探索**\n' +
-					'- 上午：龙井村品茶，体验茶文化\n' +
-					'- 下午：河坊街品尝杭州小吃\n' +
-					'- 推荐美食：西湖醋鱼、东坡肉、龙井虾仁';
+					// 滚动到底部
+					this.$nextTick(() => {
+						this.scrollToBottom();
+					});
 					
-					// 设置目的地和地图标记数据
-					this.destinationData = {
-						destination: '杭州',
-						markers: [
-							{ name: '西湖', longitude: 120.1551, latitude: 30.2741 },
-							{ name: '断桥残雪', longitude: 120.1486, latitude: 30.2568 },
-							{ name: '龙井村', longitude: 120.1047, latitude: 30.2345 },
-							{ name: '河坊街', longitude: 120.1696, latitude: 30.2342 }
-						]
+				} catch (error) {
+					console.error('AI回复生成失败:', error);
+					
+					// 错误处理：显示友好的错误消息
+					const errorResponse = {
+						type: 'ai',
+						content: '抱歉，AI助手暂时无法响应。请检查网络连接后重试，或稍后再试。',
+						time: this.getCurrentTime()
 					};
-				} else {
-					response.content = '感谢您分享旅行想法！为了更好地为您服务，请告诉我：\n\n' +
-					'1. 具体的旅行目的地\n' +
-					'2. 出行时间（几天）\n' +
-					'3. 预算范围\n' +
-					'4. 您的兴趣偏好（自然风光/历史文化/美食/购物等）\n\n' +
-					'我会根据这些信息为您定制专属的旅行路线。';
+					
+					this.messages.push(errorResponse);
+					this.isAIThinking = false;
+					
+					// 滚动到底部
+					this.$nextTick(() => {
+						this.scrollToBottom();
+					});
 				}
-
-				this.aiResponse = response.content;
-				this.messages.push(response);
-				this.isAIThinking = false;
-				this.showGenerateButton = true;
-				
-				// 滚动到底部
-				this.$nextTick(() => {
-					this.scrollToBottom();
-				});
 			},
 			
 			// 填充示例
@@ -263,7 +273,8 @@
 				const aiData = {
 					recommendation: this.aiResponse,
 					title: 'AI定制旅行攻略',
-					content: this.aiResponse
+					content: this.aiResponse,
+					aiPlanData: this.aiPlanData // 携带完整的AI计划数据
 				};
 				
 				// 如果有目的地数据，添加到跳转参数中
@@ -300,73 +311,63 @@
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
-		background-color: #ffffff;
-		padding-top: 40rpx;
-		box-sizing: border-box;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		padding: 20rpx;
 	}
 
-	/* 返回按钮样式 */
 	.back-button {
 		position: absolute;
 		top: 40rpx;
-		left: 30rpx;
-		background: none;
+		left: 20rpx;
+		background: rgba(255, 255, 255, 0.2);
 		border: none;
-		color: #333;
-		font-size: 48rpx;
-		cursor: pointer;
-		padding: 16rpx;
 		border-radius: 50%;
-		transition: background-color 0.3s;
+		width: 80rpx;
+		height: 80rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		z-index: 10;
 	}
 
-	.back-button:hover {
-		background-color: rgba(0, 0, 0, 0.05);
-	}
-
 	.back-icon {
-		font-size: 48rpx;
+		font-size: 36rpx;
+		color: white;
 		font-weight: bold;
 	}
 
-	/* 标题区域样式 */
 	.app-header {
 		text-align: center;
-		padding: 40rpx 32rpx 30rpx;
-		background: linear-gradient(135deg, #1A9E8F 0%, #15847a 100%);
-		color: white;
-		margin: 0 30rpx 30rpx;
-		border-radius: 25rpx;
-		box-shadow: 0 4rpx 20rpx rgba(26, 158, 143, 0.3);
+		margin-top: 60rpx;
+		margin-bottom: 30rpx;
 	}
 
 	.main-title {
-		font-size: 56rpx;
-		font-weight: 700;
+		font-size: 48rpx;
+		font-weight: bold;
 		color: white;
-		margin: 0 0 20rpx 0;
-		letter-spacing: 1rpx;
 		display: block;
+		margin-bottom: 10rpx;
 	}
 
 	.sub-title {
-		font-size: 32rpx;
-		color: rgba(255, 255, 255, 0.9);
-		margin: 0;
-		font-weight: 400;
+		font-size: 28rpx;
+		color: rgba(255, 255, 255, 0.8);
 		display: block;
 	}
 
 	.chat-content {
 		flex: 1;
-		overflow: hidden;
-		padding: 0 30rpx;
-		background-color: #f8f9fa;
+		background: white;
+		border-radius: 20rpx;
+		padding: 20rpx;
+		margin-bottom: 20rpx;
+		box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 	}
 
 	.message-list {
 		height: 100%;
+		max-height: 600rpx;
 	}
 
 	.message-item {
@@ -383,16 +384,11 @@
 		width: 80rpx;
 		height: 80rpx;
 		border-radius: 50%;
-		background: linear-gradient(135deg, #1A9E8F 0%, #15847a 100%);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		margin: 0 20rpx;
-		flex-shrink: 0;
-	}
-
-	.user-message .message-avatar {
-		background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 	}
 
 	.avatar-icon {
@@ -401,20 +397,15 @@
 
 	.message-content {
 		flex: 1;
-		background: white;
-		padding: 25rpx;
+		background: #f8f9fa;
 		border-radius: 20rpx;
+		padding: 20rpx;
 		max-width: 70%;
-		box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
-	}
-
-	.ai-message .message-content {
-		border-top-left-radius: 0;
+		position: relative;
 	}
 
 	.user-message .message-content {
-		border-top-right-radius: 0;
-		background: linear-gradient(135deg, #1A9E8F 0%, #15847a 100%);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		color: white;
 	}
 
@@ -427,13 +418,13 @@
 	.message-time {
 		font-size: 22rpx;
 		color: #999;
-		margin-top: 15rpx;
+		margin-top: 10rpx;
 		display: block;
+		text-align: right;
 	}
 
 	.user-message .message-time {
-		color: rgba(255,255,255,0.7);
-		text-align: right;
+		color: rgba(255, 255, 255, 0.7);
 	}
 
 	.suggestion-list {
@@ -450,15 +441,14 @@
 	.thinking-indicator {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		gap: 5rpx;
 		margin-bottom: 10rpx;
 	}
 
 	.thinking-dot {
-		font-size: 40rpx;
-		color: #666;
-		animation: blink 1.4s infinite both;
+		font-size: 36rpx;
+		color: #667eea;
+		animation: blink 1.4s infinite;
+		margin: 0 5rpx;
 	}
 
 	.thinking-dot:nth-child(2) {
@@ -470,117 +460,118 @@
 	}
 
 	@keyframes blink {
-		0%, 80%, 100% {
-			opacity: 0.3;
-		}
-		40% {
-			opacity: 1;
-		}
+		0%, 100% { opacity: 0.2; }
+		50% { opacity: 1; }
 	}
 
 	.thinking-text {
 		font-size: 24rpx;
-		color: #666;
-		text-align: center;
+		color: #999;
 	}
 
 	.input-section {
 		background: white;
-		padding: 25rpx 30rpx;
-		border-top: 2rpx solid #f0f0f0;
+		border-radius: 20rpx;
+		padding: 20rpx;
+		box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
 	}
 
 	.input-container {
 		display: flex;
 		align-items: flex-end;
-		gap: 20rpx;
 		margin-bottom: 20rpx;
 	}
 
 	.message-input {
 		flex: 1;
 		background: #f8f9fa;
-		border: 2rpx solid #e9ecef;
-		border-radius: 25rpx;
-		padding: 25rpx 30rpx;
+		border: none;
+		border-radius: 20rpx;
+		padding: 20rpx;
 		font-size: 28rpx;
-		min-height: 100rpx;
+		min-height: 80rpx;
 		max-height: 200rpx;
-		margin-right: 20rpx;
 	}
 
 	.send-btn {
-		background: linear-gradient(135deg, #1A9E8F 0%, #15847a 100%);
-		color: white;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		border: none;
-		border-radius: 15rpx;
-		width: 120rpx;
-		height: 80rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-shrink: 0;
+		border-radius: 20rpx;
+		padding: 20rpx 30rpx;
+		margin-left: 20rpx;
+		color: white;
 		font-size: 28rpx;
-		font-weight: 500;
 	}
 
 	.send-btn:disabled {
 		background: #ccc;
-	}
-
-	.send-icon {
-		font-size: 28rpx;
+		opacity: 0.6;
 	}
 
 	.quick-tips {
-		margin-top: 20rpx;
+		border-top: 1rpx solid #eee;
+		padding-top: 20rpx;
 	}
 
 	.tips-title {
 		font-size: 24rpx;
-		color: #666;
+		color: #999;
 		margin-bottom: 15rpx;
 		display: block;
 	}
 
 	.tips-list {
 		display: flex;
-		flex-direction: column;
-		gap: 12rpx;
+		flex-wrap: wrap;
+		gap: 15rpx;
 	}
 
 	.tip-item {
-		background: #f8f9fa;
-		padding: 15rpx 20rpx;
+		background: #f0f2f5;
 		border-radius: 20rpx;
-		font-size: 26rpx;
-		color: #1A9E8F;
-		border: 1rpx solid #e9ecef;
+		padding: 15rpx 25rpx;
+		font-size: 24rpx;
+		color: #666;
+		cursor: pointer;
+		transition: all 0.3s;
+	}
+
+	.tip-item:active {
+		background: #e4e6eb;
+		transform: scale(0.95);
 	}
 
 	.generate-section {
-		padding: 25rpx 30rpx;
-		background: white;
-		border-top: 2rpx solid #f0f0f0;
+		position: fixed;
+		bottom: 30rpx;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 100;
 	}
 
 	.generate-btn {
-		background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+		background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
 		border: none;
 		border-radius: 50rpx;
 		padding: 25rpx 40rpx;
 		color: white;
-		font-size: 28rpx;
+		font-size: 32rpx;
 		font-weight: bold;
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		gap: 15rpx;
-		width: 100%;
+		box-shadow: 0 8rpx 25rpx rgba(255, 107, 107, 0.4);
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0% { transform: translateX(-50%) scale(1); }
+		50% { transform: translateX(-50%) scale(1.05); }
+		100% { transform: translateX(-50%) scale(1); }
 	}
 
 	.generate-icon {
-		font-size: 32rpx;
+		font-size: 36rpx;
 	}
 
 	.generate-text {
