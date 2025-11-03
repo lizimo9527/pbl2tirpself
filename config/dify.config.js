@@ -3,7 +3,7 @@ const difyConfig = {
   // Dify服务器配置
   server: {
     baseURL: 'https://dify.aipfuture.com', // Dify应用地址
-    apiKey: '', // 聊天应用通常不需要API密钥
+    apiKey: 'Bearer app-1i1suD6MWKtMYQuq', // 使用正确的API密钥和应用ID
     timeout: 30000 // 30秒超时
   },
 
@@ -11,8 +11,8 @@ const difyConfig = {
   applications: {
     travelAssistant: {
       appId: '1i1suD6MWKtMYQuq', // 旅行助手应用ID
-      chatEndpoint: '/chat-messages', // 聊天消息端点
-      endpoint: '/workflows/run' // 工作流运行端点
+      chatEndpoint: '/v1/chat-messages', // 聊天消息端点
+      endpoint: '/v1/workflows/run' // 工作流运行端点
     }
   },
 

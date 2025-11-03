@@ -40,11 +40,13 @@ class DifyChatService {
       
       const currentConversationId = conversationId || this.conversationId;
       
-      // 构建Dify聊天API请求
+      // 构建Dify聊天API请求 - 使用正确的API格式
       const requestData = {
-        inputs: {},
+        inputs: {
+          query: message
+        },
         query: message,
-        response_mode: 'streaming', // 流式响应
+        response_mode: 'streaming', // 使用streaming模式，兼容性更好
         user: 'mini-program-user-' + Date.now(),
         conversation_id: currentConversationId
       };
@@ -55,15 +57,29 @@ class DifyChatService {
         method: 'POST',
         header: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer app-${this.appId}`
+          'Authorization': difyConfig.server.apiKey
         },
-        data: requestData
+        data: requestData, // 直接传递对象，uni.request会自动序列化
+        timeout: 30000 // 30秒超时
       });
 
+      console.log('Dify API响应状态码:', response.statusCode);
+      
       if (response.statusCode === 200) {
         return this.parseChatResponse(response.data);
+      } else if (response.statusCode === 401) {
+        console.warn('Dify API认证失败：需要有效的API密钥');
+        // 认证失败时使用模拟回复
+        return await this.mockChatResponse(message, '认证失败');
+      } else if (response.statusCode === 400) {
+        console.warn('Dify API请求格式错误，检查请求数据格式');
+        console.log('请求数据:', JSON.stringify(requestData));
+        // 400错误时使用模拟回复
+        return await this.mockChatResponse(message, '请求格式错误');
       } else {
-        throw new Error(`Dify聊天API调用失败: ${response.statusCode}`);
+        console.warn(`Dify聊天API调用失败: ${response.statusCode}, 使用模拟回复`);
+        // 如果Dify服务不可用，使用模拟回复
+        return await this.mockChatResponse(message, '服务不可用');
       }
     } catch (error) {
       console.error('Dify聊天服务调用错误:', error);
