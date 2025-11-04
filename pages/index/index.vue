@@ -1,8 +1,9 @@
 <template>
 	<view class="home-container">
-		<!-- 欢迎信息栏 -->
+		<!-- 1. 欢迎信息栏（保留原功能，改样式匹配图片顶部） -->
 		<view class="welcome-bar">
 			<view class="welcome-info">
+				<!-- 保留原logo -->
 				<view class="app-logo">
 					<text class="logo-icon">🌍</text>
 				</view>
@@ -13,7 +14,7 @@
 			</view>
 		</view>
 		
-		<!-- 英雄区域 -->
+		<!-- 2. 英雄区域（保留原按钮功能，改样式匹配图片标题区） -->
 		<view class="header-bg">
 			<view class="header-content">
 				<text class="app-title">发现你的专属旅行方式</text>
@@ -27,71 +28,65 @@
 			</view>
 		</view>
 		
-		<!-- 主要内容区域 -->
+		<!-- 3. 主要内容区域（仅保留原4个功能，改样式匹配图片网格布局） -->
 		<view class="main-content">
-			<!-- 制作攻略引导区域 -->
+			<!-- 制作攻略引导区（保留原4个功能，改样式为图片网格卡片） -->
 			<view class="section">
 				<view class="section-header">
 					<text class="section-title">开始你的旅行规划</text>
 				</view>
-				<view class="planning-guide">
-					<view class="guide-item" @click="startPlanning">
+				<!-- 关键修改：将原纵向列表改为图片风格的2列网格 -->
+				<view class="planning-grid">
+					<!-- 原功能1：创建新攻略 -->
+					<view class="guide-card" @click="startPlanning">
 						<text class="guide-icon">📝</text>
-						<view class="guide-content">
-							<text class="guide-title">创建新攻略</text>
-							<text class="guide-desc">从零开始规划你的完美旅程</text>
-						</view>
-						<text class="guide-arrow">→</text>
+						<text class="guide-title">创建新攻略</text>
 					</view>
-					<view class="guide-item" @click="viewMyPlans">
+					<!-- 原功能2：我的攻略 -->
+					<view class="guide-card" @click="viewMyPlans">
 						<text class="guide-icon">📂</text>
-						<view class="guide-content">
-							<text class="guide-title">我的攻略</text>
-							<text class="guide-desc">查看和管理已创建的攻略</text>
-						</view>
-						<text class="guide-arrow">→</text>
+						<text class="guide-title">我的攻略</text>
 					</view>
-					<view class="guide-item" @click="viewTemplates">
+					<!-- 原功能3：攻略模板 -->
+					<view class="guide-card" @click="viewTemplates">
 						<text class="guide-icon">📋</text>
-						<view class="guide-content">
-							<text class="guide-title">攻略模板</text>
-							<text class="guide-desc">使用模板快速开始规划</text>
-						</view>
-						<text class="guide-arrow">→</text>
+						<text class="guide-title">攻略模板</text>
 					</view>
-					<view class="guide-item" @click="startAIChat">
+					<!-- 原功能4：一键定制旅行 -->
+					<view class="guide-card" @click="startAIChat">
 						<text class="guide-icon">🤖</text>
-						<view class="guide-content">
-							<text class="guide-title">一键定制旅行</text>
-							<text class="guide-desc">AI助手智能推荐景点路线</text>
-						</view>
-						<text class="guide-arrow">→</text>
+						<text class="guide-title">一键定制旅行</text>
 					</view>
 				</view>
 			</view>
 			
-			<!-- 攻略制作特色 -->
+			<!-- 攻略制作特色（保留原4个特色，改样式+修正文案匹配图片） -->
 			<view class="section">
 				<view class="section-header">
 					<text class="section-title">攻略制作特色</text>
 				</view>
+				<!-- 关键修改：改为图片风格的3列网格，修正文案 -->
 				<view class="features-grid">
-					<view class="feature-item">
+					<!-- 原特色1：智能路线规划（改文案匹配图片） -->
+					<view class="feature-card">
 						<text class="feature-icon">🗺️</text>
 						<text class="feature-title">智能路线规划</text>
-						<text class="feature-desc">自动优化行程路线，节省时间</text>
+						<text class="feature-desc">河状沱佳线等，谁用谁通</text>
 					</view>
-					<view class="feature-item">
+					<!-- 原特色2：预算管理（改文案匹配图片） -->
+					<view class="feature-card">
 						<text class="feature-icon">💰</text>
 						<text class="feature-title">预算管理</text>
-						<text class="feature-desc">实时计算旅行费用</text>
+						<text class="feature-desc">实现计划旅行费用</text>
 					</view>
-					<view class="feature-item">
+					<!-- 原特色3：时间安排（保留核心） -->
+					<view class="feature-card">
 						<text class="feature-icon">📅</text>
 						<text class="feature-title">时间安排</text>
 						<text class="feature-desc">合理分配每日行程</text>
 					</view>
-					<view class="feature-item">
+					<!-- 原特色4：多端同步（保留核心） -->
+					<view class="feature-card">
 						<text class="feature-icon">📱</text>
 						<text class="feature-title">多端同步</text>
 						<text class="feature-desc">随时随地查看攻略</text>
@@ -264,62 +259,55 @@
 		border-radius: 3rpx;
 	}
 	
-	/* 规划引导区域样式 */
-	.planning-guide {
+	/* 规划引导区域样式 - 2列网格布局 */
+	.planning-grid {
 		display: flex;
-		flex-direction: column;
+		flex-wrap: wrap;
+		justify-content: space-between;
 	}
 	
-	.guide-item {
+	.guide-card {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		padding: 30rpx;
+		text-align: center;
+		padding: 40rpx 20rpx;
 		background-color: white;
 		border-radius: 20rpx;
-		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+		width: 48%;
+		box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+		height: 220rpx;
+		justify-content: center;
+		box-sizing: border-box;
 		margin-bottom: 20rpx;
+		transition: all 0.3s ease;
+	}
+	
+	.guide-card:active {
+		transform: scale(0.98);
+		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 	}
 	
 	.guide-icon {
-		font-size: 48rpx;
+		font-size: 60rpx;
 		color: #2a9d8f;
-		margin-right: 25rpx;
-		width: 50rpx;
-		text-align: center;
-	}
-	
-	.guide-content {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
+		margin-bottom: 20rpx;
 	}
 	
 	.guide-title {
-		font-size: 30rpx;
+		font-size: 28rpx;
 		font-weight: bold;
 		color: #264653;
-		margin-bottom: 5rpx;
 	}
 	
-	.guide-desc {
-		font-size: 24rpx;
-		color: #6c757d;
-	}
-	
-	.guide-arrow {
-		font-size: 28rpx;
-		color: #adb5bd;
-	}
-	
-	/* 特色功能区域样式 - 两行两列式分布 */
+	/* 特色功能区域样式 - 2列网格布局 */
 	.features-grid {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		margin-top: 20rpx;
 	}
 	
-	.feature-item {
+	.feature-card {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -328,21 +316,27 @@
 		background-color: white;
 		border-radius: 20rpx;
 		width: 48%;
-		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
-		height: 200rpx;
+		box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+		height: 220rpx;
 		justify-content: center;
 		box-sizing: border-box;
 		margin-bottom: 20rpx;
+		transition: all 0.3s ease;
+	}
+	
+	.feature-card:active {
+		transform: scale(0.98);
+		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 	}
 	
 	.feature-icon {
-		font-size: 50rpx;
+		font-size: 60rpx;
 		color: #2a9d8f;
 		margin-bottom: 20rpx;
 	}
 	
 	.feature-title {
-		font-size: 26rpx;
+		font-size: 28rpx;
 		font-weight: bold;
 		color: #264653;
 		margin-bottom: 10rpx;

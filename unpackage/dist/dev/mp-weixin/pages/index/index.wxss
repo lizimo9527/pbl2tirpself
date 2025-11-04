@@ -1,12 +1,13 @@
 
+	/* 全局样式 */
 .home-container {
 		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-		background-color: #ffffff;
+		background-color: #f5f7fa;
 }
+	
+	/* 欢迎区域样式 */
 .welcome-bar {
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #2a9d8f 0%, #264653 100%);
 		padding: 30rpx 30rpx 40rpx;
 		color: white;
 }
@@ -14,28 +15,36 @@
 		display: flex;
 		align-items: center;
 }
-.user-avatar {
-		width: 80rpx;
-		height: 80rpx;
+.app-logo {
+		width: 90rpx;
+		height: 90rpx;
+		background-color: rgba(255, 255, 255, 0.2);
 		border-radius: 50%;
-		margin-right: 20rpx;
-		border: 2rpx solid rgba(255,255,255,0.3);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-right: 25rpx;
+}
+.logo-icon {
+		font-size: 48rpx;
 }
 .user-details {
 		display: flex;
 		flex-direction: column;
 }
 .user-name {
-		font-size: 32rpx;
+		font-size: 34rpx;
 		font-weight: bold;
 		margin-bottom: 8rpx;
 }
 .user-welcome {
-		font-size: 24rpx;
+		font-size: 26rpx;
 		opacity: 0.9;
 }
+	
+	/* 英雄区域样式 */
 .header-bg {
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #2a9d8f 0%, #264653 100%);
 		padding: 60rpx 30rpx;
 		color: white;
 }
@@ -60,17 +69,21 @@
 		justify-content: center;
 }
 .start-planning-btn {
-		background: rgba(255,255,255,0.2);
-		border: 2rpx solid rgba(255,255,255,0.5);
+		background: white;
+		color: #2a9d8f;
 		border-radius: 50rpx;
-		padding: 20rpx 40rpx;
-		color: white;
+		padding: 20rpx 60rpx;
 		font-size: 28rpx;
 		font-weight: bold;
+		display: flex;
+		align-items: center;
 }
-.button-hover {
-		background: rgba(255,255,255,0.3);
+.btn-icon {
+		font-size: 32rpx;
+		margin-right: 15rpx;
 }
+	
+	/* 主要内容区域样式 */
 .main-content {
 		padding: 40rpx 30rpx;
 }
@@ -83,79 +96,98 @@
 .section-title {
 		font-size: 36rpx;
 		font-weight: bold;
-		color: #333333;
+		color: #264653;
+		position: relative;
+		padding-left: 15rpx;
 }
-.planning-guide {
+.section-title::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 6rpx;
+		height: 30rpx;
+		background-color: #2a9d8f;
+		border-radius: 3rpx;
+}
+	
+	/* 规划引导区域样式 - 2列网格布局 */
+.planning-grid {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+}
+.guide-card {
 		display: flex;
 		flex-direction: column;
-}
-.guide-item {
-		display: flex;
 		align-items: center;
-		padding: 30rpx;
-		background-color: #f8f9fa;
+		text-align: center;
+		padding: 40rpx 20rpx;
+		background-color: white;
 		border-radius: 20rpx;
-		border: 2rpx solid #e9ecef;
+		width: 48%;
+		box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+		height: 220rpx;
+		justify-content: center;
+		box-sizing: border-box;
 		margin-bottom: 20rpx;
+		transition: all 0.3s ease;
 }
-.guide-item:last-child {
-		margin-bottom: 0;
-}
-.guide-item-hover {
-		background-color: #e9ecef;
+.guide-card:active {
 		transform: scale(0.98);
+		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 }
 .guide-icon {
-		font-size: 48rpx;
-		margin-right: 20rpx;
-}
-.guide-content {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
+		font-size: 60rpx;
+		color: #2a9d8f;
+		margin-bottom: 20rpx;
 }
 .guide-title {
 		font-size: 28rpx;
 		font-weight: bold;
-		color: #333333;
-		margin-bottom: 8rpx;
+		color: #264653;
 }
-.guide-desc {
-		font-size: 22rpx;
-		color: #666666;
-}
+	
+	/* 特色功能区域样式 - 2列网格布局 */
 .features-grid {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 }
-.feature-item {
+.feature-card {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		padding: 25rpx 15rpx;
-		background-color: #f8f9fa;
-		border-radius: 15rpx;
+		padding: 35rpx 20rpx;
+		background-color: white;
+		border-radius: 20rpx;
 		width: 48%;
-		margin-bottom: 20rpx;
+		box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+		height: 220rpx;
+		justify-content: center;
 		box-sizing: border-box;
+		margin-bottom: 20rpx;
+		transition: all 0.3s ease;
 }
-.feature-item:nth-child(2n) {
-		margin-right: 0;
+.feature-card:active {
+		transform: scale(0.98);
+		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 }
 .feature-icon {
-		font-size: 40rpx;
-		margin-bottom: 15rpx;
+		font-size: 60rpx;
+		color: #2a9d8f;
+		margin-bottom: 20rpx;
 }
 .feature-title {
-		font-size: 24rpx;
+		font-size: 28rpx;
 		font-weight: bold;
-		color: #333333;
-		margin-bottom: 8rpx;
+		color: #264653;
+		margin-bottom: 10rpx;
 }
 .feature-desc {
-		font-size: 20rpx;
-		color: #666666;
-		line-height: 1.4;
+		font-size: 22rpx;
+		color: #6c757d;
+		line-height: 1.5;
 }
