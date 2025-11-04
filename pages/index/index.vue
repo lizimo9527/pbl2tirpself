@@ -311,11 +311,12 @@
 		color: #adb5bd;
 	}
 	
-	/* 特色功能区域样式 */
+	/* 特色功能区域样式 - 两行两列式分布 */
 	.features-grid {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
+		margin-top: 20rpx;
 	}
 	
 	.feature-item {
@@ -328,6 +329,9 @@
 		border-radius: 20rpx;
 		width: 48%;
 		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+		height: 200rpx;
+		justify-content: center;
+		box-sizing: border-box;
 		margin-bottom: 20rpx;
 	}
 	
