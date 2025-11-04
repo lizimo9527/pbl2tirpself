@@ -1,6 +1,12 @@
 <template>
 	<view class="detail-container">
+		<!-- 顶部导航栏 -->
 		<view class="detail-header">
+			<view class="header-back" @click="goBack">
+				<text class="back-icon">←</text>
+				<text class="back-text">返回</text>
+			</view>
+			<view class="header-title">攻略详情</view>
 			<view class="header-actions">
 				<button class="action-btn edit-btn" @click="editGuide">
 					<text class="action-icon">✏️</text>
@@ -209,16 +215,70 @@
 <style>
 	.detail-container {
 		min-height: 100vh;
-		background-color: #f5f5f5;
+		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 	}
 
 	.detail-header {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-items: center;
-		padding: 30rpx;
-		background: white;
-		border-bottom: 1rpx solid #f0f0f0;
+		padding: 30rpx 30rpx 20rpx;
+		background: linear-gradient(135deg, #1A9E8F 0%, #2D8C7F 100%);
+		color: white;
+		box-shadow: 0 4rpx 20rpx rgba(26, 158, 143, 0.3);
+		position: relative;
+		z-index: 10;
+	}
+
+	.header-back {
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+		padding: 10rpx 15rpx;
+		border-radius: 8rpx;
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10rpx);
+	}
+
+	.back-icon {
+		font-size: 28rpx;
+		font-weight: bold;
+	}
+
+	.back-text {
+		font-size: 26rpx;
+	}
+
+	.header-title {
+		font-size: 32rpx;
+		font-weight: 600;
+		letter-spacing: 0.5rpx;
+	}
+
+	.header-back {
+		display: flex;
+		align-items: center;
+		gap: 8rpx;
+		padding: 10rpx 15rpx;
+		border-radius: 8rpx;
+		background: rgba(255, 255, 255, 0.2);
+		backdrop-filter: blur(10rpx);
+	}
+
+	.back-icon {
+		font-size: 28rpx;
+		font-weight: bold;
+	}
+
+	.back-text {
+		font-size: 26rpx;
+	}
+
+	.header-title {
+		font-size: 32rpx;
+		font-weight: 600;
+		letter-spacing: 0.5rpx;
 	}
 
 	.header-actions {
@@ -229,25 +289,33 @@
 	.action-btn {
 		display: flex;
 		align-items: center;
-		padding: 12rpx 20rpx;
-		border-radius: 8rpx;
-		font-size: 24rpx;
+		padding: 14rpx 24rpx;
+		border-radius: 12rpx;
+		font-size: 26rpx;
+		font-weight: 500;
 		border: none;
+		transition: all 0.3s ease;
+		box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+	}
+
+	.action-btn:active {
+		transform: translateY(1rpx);
+		box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.1);
 	}
 
 	.action-icon {
-		margin-right: 6rpx;
-		font-size: 24rpx;
+		margin-right: 8rpx;
+		font-size: 26rpx;
 	}
 
 	.edit-btn {
-		background: #e6f7ff;
-		color: #1890ff;
+		background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+		color: white;
 	}
 
 	.delete-btn {
-		background: #fff2f0;
-		color: #ff4d4f;
+		background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+		color: white;
 	}
 
 	.detail-content {
@@ -280,12 +348,20 @@
 	}
 
 	.back-btn {
-		background: #1A9E8F;
+		background: linear-gradient(135deg, #1A9E8F 0%, #2D8C7F 100%);
 		color: white;
 		border: none;
-		border-radius: 8rpx;
-		padding: 15rpx 30rpx;
-		font-size: 26rpx;
+		border-radius: 12rpx;
+		padding: 18rpx 36rpx;
+		font-size: 28rpx;
+		font-weight: 500;
+		box-shadow: 0 4rpx 12rpx rgba(26, 158, 143, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.back-btn:active {
+		transform: translateY(1rpx);
+		box-shadow: 0 2rpx 6rpx rgba(26, 158, 143, 0.3);
 	}
 
 	.guide-detail {
@@ -295,6 +371,9 @@
 	.cover-section {
 		background: white;
 		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		overflow: hidden;
+		box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
 	}
 
 	.cover-image {
@@ -313,8 +392,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background: #f8f9fa;
-		color: #999;
+		background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+		color: #6c757d;
 	}
 
 	.placeholder-icon {
@@ -328,8 +407,10 @@
 
 	.info-section {
 		background: white;
-		padding: 30rpx;
+		padding: 40rpx;
 		margin-bottom: 20rpx;
+		border-radius: 16rpx;
+		box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
 	}
 
 	.title-section {
