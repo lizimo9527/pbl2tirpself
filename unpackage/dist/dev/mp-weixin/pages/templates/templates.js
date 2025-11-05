@@ -9,7 +9,7 @@ const _sfc_main = {
         {
           id: 1,
           guideId: "hebei_classic_3days",
-          image: "/static/images/hebei-classic.jpg",
+          image: "/static/images/templates/hebei1.jpg",
           category: "河北省特色",
           title: "河北经典3日游",
           description: "承德避暑山庄、秦皇岛北戴河、山海关经典路线",
@@ -20,7 +20,7 @@ const _sfc_main = {
         {
           id: 2,
           guideId: "hebei_cultural_5days",
-          image: "/static/images/hebei-cultural.jpg",
+          image: "/static/images/templates/baoding.jpg",
           category: "河北省特色",
           title: "河北文化深度5日游",
           description: "保定直隶总督署、正定古城、赵州桥文化之旅",
@@ -31,7 +31,7 @@ const _sfc_main = {
         {
           id: 3,
           guideId: "hebei_natural_4days",
-          image: "/static/images/hebei-natural.jpg",
+          image: "/static/images/templates/baishishan.jpg",
           category: "河北省特色",
           title: "河北自然风光4日游",
           description: "野三坡、白石山、苍岩山自然风光探索",
@@ -42,7 +42,7 @@ const _sfc_main = {
         {
           id: 4,
           guideId: "hebei_greatwall_2days",
-          image: "/static/images/hebei-greatwall.jpg",
+          image: "/static/images/templates/qinhuangdao.jpg",
           category: "河北省特色",
           title: "河北长城精华2日游",
           description: "金山岭长城、喜峰口长城长城文化体验",
@@ -98,7 +98,7 @@ const _sfc_main = {
       const template = this.templatesList.find((item) => item.id === templateId);
       if (template) {
         common_vendor.index.navigateTo({
-          url: `/pages/guide/detail/detail?id=${template.guideId}`
+          url: `/pages/template-detail/template-detail?id=${template.guideId}`
         });
       }
     }

@@ -2,12 +2,22 @@
 	<view class="template-detail-container">
 		<!-- 顶部导航栏 -->
 		<view class="detail-header">
-			<view class="header-back" @click="goBack">
-				<text class="back-icon">←</text>
-				<text class="back-text">返回</text>
+			<!-- 第一行：返回按钮和标题 -->
+			<view class="header-top-row">
+				<view class="header-back" @click="goBack">
+					<text class="back-icon">←</text>
+					<text class="back-text">返回</text>
+				</view>
+				<view class="header-title">{{templateData ? templateData.title : '攻略模板详情'}}</view>
+				<view style="width: 120rpx;"></view> <!-- 占位，保持平衡 -->
 			</view>
-			<view class="header-title">{{templateData ? templateData.title : '攻略模板详情'}}</view>
+			
+			<!-- 第二行：按钮 -->
 			<view class="header-actions">
+				<button class="action-btn use-template-btn" @click="useTemplate">
+					<text class="action-icon">📝</text>
+					<text class="action-text">使用模板</text>
+				</button>
 				<button class="action-btn map-btn" @click="showMap">
 					<text class="action-icon">🗺️</text>
 					<text class="action-text">地图</text>
@@ -61,11 +71,15 @@
 												<view class="transport-item" v-for="(transport, transIndex) in location.transport" :key="transIndex">
 													<text class="transport-icon">{{transport.type}}</text>
 													<view class="transport-details">
-														<text class="transport-type">{{transport.type === '🚇' ? '地铁' : '出租车'}}</text>
+														<text class="transport-type">{{transport.type === '🚇' ? '地铁' : transport.type === '🚕' ? '出租车' : transport.type === '🚌' ? '公交' : '其他'}}</text>
 														<text class="transport-route">{{transport.route}}</text>
 													</view>
 												</view>
 											</view>
+										</view>
+										<view class="details-content" v-if="location.details">
+											<text class="details-title">景点详情</text>
+											<text class="details-text">{{location.details}}</text>
 										</view>
 									</view>
 								</view>
@@ -120,6 +134,8 @@
 </template>
 
 <script>
+	import templateService from '@/services/templateService.js'
+	
 	export default {
 		data() {
 			return {
@@ -610,6 +626,23 @@
 			},
 			closeMap() {
 				this.showMapModal = false
+			},
+			useTemplate() {
+				// 将模板数据传递到编辑页面
+				const templateData = {
+					title: this.templateData.title,
+					subtitle: this.templateData.subtitle,
+					image: this.templateData.image,
+					days: this.templateData.days,
+					tips: this.templateData.tips,
+					mapMarkers: this.templateData.mapMarkers,
+					mapPolyline: this.templateData.mapPolyline
+				};
+				
+				// 跳转到编辑页面并传递模板数据
+				uni.navigateTo({
+					url: `/pages/guide/edit/edit?templateData=${encodeURIComponent(JSON.stringify(templateData))}`
+				});
 			}
 		}
 	}
@@ -624,14 +657,20 @@
 
 	.detail-header {
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		flex-direction: column;
 		padding: 30rpx 30rpx 20rpx;
 		background: linear-gradient(135deg, #165DFF 0%, #0E4BCC 100%);
 		color: white;
 		box-shadow: 0 4rpx 20rpx rgba(22, 93, 255, 0.3);
 		position: relative;
 		z-index: 10;
+	}
+
+	.header-top-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20rpx;
 	}
 
 	.header-back {
@@ -654,14 +693,18 @@
 	}
 
 	.header-title {
-		font-size: 32rpx;
+		font-size: 36rpx;
 		font-weight: 600;
 		letter-spacing: 0.5rpx;
+		text-align: center;
+		flex: 1;
+		margin: 0 40rpx;
 	}
 
 	.header-actions {
 		display: flex;
-		gap: 15rpx;
+		justify-content: center;
+		gap: 20rpx;
 	}
 
 	.action-btn {
@@ -684,6 +727,11 @@
 	.action-icon {
 		margin-right: 8rpx;
 		font-size: 26rpx;
+	}
+
+	.use-template-btn {
+		background: linear-gradient(135deg, #00B42A 0%, #009A29 100%);
+		color: white;
 	}
 
 	.map-btn {
