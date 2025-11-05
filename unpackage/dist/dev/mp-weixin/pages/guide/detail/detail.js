@@ -85,41 +85,42 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: common_vendor.o((...args) => $options.editGuide && $options.editGuide(...args)),
-    b: common_vendor.o((...args) => $options.deleteGuide && $options.deleteGuide(...args)),
-    c: $data.loading
+    a: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
+    b: common_vendor.o((...args) => $options.editGuide && $options.editGuide(...args)),
+    c: common_vendor.o((...args) => $options.deleteGuide && $options.deleteGuide(...args)),
+    d: $data.loading
   }, $data.loading ? {} : !$data.guide ? {
-    e: common_vendor.o((...args) => $options.goBack && $options.goBack(...args))
+    f: common_vendor.o((...args) => $options.goBack && $options.goBack(...args))
   } : common_vendor.e({
-    f: $data.guide.imagePath
-  }, $data.guide.imagePath ? {
     g: $data.guide.imagePath
+  }, $data.guide.imagePath ? {
+    h: $data.guide.imagePath
   } : {}, {
-    h: common_vendor.t($data.guide.title),
-    i: common_vendor.t($data.guide.status === "published" ? "已发布" : "草稿"),
-    j: common_vendor.n($data.guide.status),
-    k: common_vendor.t($data.guide.destination || "未设置目的地"),
-    l: common_vendor.t($options.formatDate($data.guide.createTime)),
-    m: common_vendor.t($options.formatDate($data.guide.updateTime || $data.guide.createTime)),
-    n: common_vendor.t($data.guide.content ? $data.guide.content.length : 0),
-    o: $data.guide.tags && $data.guide.tags.length > 0
+    i: common_vendor.t($data.guide.title),
+    j: common_vendor.t($data.guide.status === "published" ? "已发布" : "草稿"),
+    k: common_vendor.n($data.guide.status),
+    l: common_vendor.t($data.guide.destination || "未设置目的地"),
+    m: common_vendor.t($options.formatDate($data.guide.createTime)),
+    n: common_vendor.t($options.formatDate($data.guide.updateTime || $data.guide.createTime)),
+    o: common_vendor.t($data.guide.content ? $data.guide.content.length : 0),
+    p: $data.guide.tags && $data.guide.tags.length > 0
   }, $data.guide.tags && $data.guide.tags.length > 0 ? {
-    p: common_vendor.f($data.guide.tags, (tag, index, i0) => {
+    q: common_vendor.f($data.guide.tags, (tag, index, i0) => {
       return {
         a: common_vendor.t(tag),
         b: index
       };
     })
   } : {}, {
-    q: common_vendor.t($data.guide.content || "暂无内容"),
-    r: $data.guide.mapMarkers && $data.guide.mapMarkers.length > 0
+    r: common_vendor.t($data.guide.content || "暂无内容"),
+    s: $data.guide.mapMarkers && $data.guide.mapMarkers.length > 0
   }, $data.guide.mapMarkers && $data.guide.mapMarkers.length > 0 ? {
-    s: $data.guide.mapMarkers[0].longitude,
-    t: $data.guide.mapMarkers[0].latitude,
-    v: $data.guide.mapMarkers,
-    w: $options.getPolyline($data.guide.mapMarkers)
+    t: $data.guide.mapMarkers[0].longitude,
+    v: $data.guide.mapMarkers[0].latitude,
+    w: $data.guide.mapMarkers,
+    x: $options.getPolyline($data.guide.mapMarkers)
   } : {}), {
-    d: !$data.guide
+    e: !$data.guide
   });
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);

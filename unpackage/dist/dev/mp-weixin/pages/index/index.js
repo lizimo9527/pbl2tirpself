@@ -1,6 +1,5 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   data() {
     return {
@@ -32,16 +31,11 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0,
+    a: common_vendor.o((...args) => $options.startPlanning && $options.startPlanning(...args)),
     b: common_vendor.o((...args) => $options.startPlanning && $options.startPlanning(...args)),
-    c: common_assets._imports_1,
-    d: common_vendor.o((...args) => $options.startPlanning && $options.startPlanning(...args)),
-    e: common_assets._imports_2,
-    f: common_vendor.o((...args) => $options.viewMyPlans && $options.viewMyPlans(...args)),
-    g: common_assets._imports_3,
-    h: common_vendor.o((...args) => $options.viewTemplates && $options.viewTemplates(...args)),
-    i: common_assets._imports_4,
-    j: common_vendor.o((...args) => $options.startAIChat && $options.startAIChat(...args))
+    c: common_vendor.o((...args) => $options.viewMyPlans && $options.viewMyPlans(...args)),
+    d: common_vendor.o((...args) => $options.viewTemplates && $options.viewTemplates(...args)),
+    e: common_vendor.o((...args) => $options.startAIChat && $options.startAIChat(...args))
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
