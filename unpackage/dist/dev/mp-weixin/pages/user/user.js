@@ -158,7 +158,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0,
+    a: common_assets._imports_0$1,
     b: common_vendor.t($data.userInfo.name),
     c: common_vendor.t($data.userInfo.level),
     d: common_vendor.t($data.userInfo.desc),
