@@ -37,32 +37,32 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "/static/images/tabbar/首页.png",
-        "selectedIconPath": "/static/images/tabbar/首页.png"
+        "iconPath": "/static/images/tabbar/首页-copy.png",
+        "selectedIconPath": "/static/images/tabbar/首页-copy.png"
       },
       {
         "pagePath": "pages/create/create",
         "text": "制作攻略",
-        "iconPath": "/static/images/tabbar/攻略.png",
-        "selectedIconPath": "/static/images/tabbar/攻略.png"
+        "iconPath": "/static/images/tabbar/旅游攻略.png",
+        "selectedIconPath": "/static/images/tabbar/旅游攻略.png"
       },
       {
         "pagePath": "pages/community/community",
         "text": "发帖社区",
-        "iconPath": "/static/images/tabbar/社区.png",
-        "selectedIconPath": "/static/images/tabbar/社区.png"
+        "iconPath": "/static/images/tabbar/发帖社区 (2).png",
+        "selectedIconPath": "/static/images/tabbar/发帖社区 (2).png"
       },
       {
         "pagePath": "pages/match/match",
         "text": "匹配搭子",
-        "iconPath": "/static/images/tabbar/搭子.png",
-        "selectedIconPath": "/static/images/tabbar/搭子.png"
+        "iconPath": "/static/images/tabbar/搭子 (1).png",
+        "selectedIconPath": "/static/images/tabbar/搭子 (1).png"
       },
       {
         "pagePath": "pages/user/user",
         "text": "我的",
-        "iconPath": "/static/images/tabbar/我的.png",
-        "selectedIconPath": "/static/images/tabbar/我的.png"
+        "iconPath": "/static/images/tabbar/我的-copy.png",
+        "selectedIconPath": "/static/images/tabbar/我的-copy.png"
       }
     ]
   },
