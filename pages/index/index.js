@@ -89,5 +89,54 @@ Page({
     wx.navigateTo({
       url: '/pages/templates/templates'
     })
+  },
+
+  /**
+   * 智能路线规划
+   */
+  showRoutePlanning: function() {
+    wx.showToast({
+      title: '智能路线规划功能开发中',
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 预算管理
+   */
+  showBudgetManagement: function() {
+    wx.showToast({
+      title: '预算管理功能开发中',
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 时间安排
+   */
+  showTimeArrangement: function() {
+    wx.showToast({
+      title: '时间安排功能开发中',
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 多端同步
+   */
+  showMultiDeviceSync: function() {
+    wx.showToast({
+      title: '多端同步功能开发中',
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 一键定制旅行
+   */
+  startAIChat: function() {
+    wx.navigateTo({
+      url: '/pages/ai-chat/ai-chat'
+    })
   }
 })

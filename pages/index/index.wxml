@@ -26,61 +26,54 @@
 	
 	<!-- 主要内容区域 -->
 	<view class="main-content">
-		<!-- 制作攻略引导区域 -->
+		<!-- 攻略制作特色（调换到上面位置，使用一行样式） -->
 		<view class="section">
 			<view class="section-header">
-				<text class="section-title">开始你的旅行规划</text>
+				<text class="section-title">特色功能</text>
 			</view>
 			<view class="planning-guide">
-				<view class="guide-item" bindtap="startPlanning" hover-class="guide-item-hover">
-					<view class="guide-icon">📝</view>
+				<view class="guide-item" bindtap="showRoutePlanning" hover-class="guide-item-hover">
+					<view class="guide-icon">🗺️</view>
 					<view class="guide-content">
-						<text class="guide-title">创建新攻略</text>
-						<text class="guide-desc">从零开始规划你的完美旅程</text>
+						<text class="guide-title">智能路线规划</text>
 					</view>
 				</view>
-				<view class="guide-item" bindtap="viewMyPlans" hover-class="guide-item-hover">
-					<view class="guide-icon">📂</view>
+				<view class="guide-item" bindtap="showBudgetManagement" hover-class="guide-item-hover">
+					<view class="guide-icon">💰</view>
 					<view class="guide-content">
-						<text class="guide-title">我的攻略</text>
-						<text class="guide-desc">查看和管理已创建的攻略</text>
+						<text class="guide-title">预算管理</text>
 					</view>
 				</view>
-				<view class="guide-item" bindtap="viewTemplates" hover-class="guide-item-hover">
-					<view class="guide-icon">📋</view>
+				<view class="guide-item" bindtap="showTimeArrangement" hover-class="guide-item-hover">
+					<view class="guide-icon">📅</view>
 					<view class="guide-content">
-						<text class="guide-title">攻略模板</text>
-						<text class="guide-desc">使用模板快速开始规划</text>
+						<text class="guide-title">时间安排</text>
 					</view>
 				</view>
 			</view>
 		</view>
 		
-		<!-- 攻略制作特色 -->
-		<view class="section">
+		<!-- 制作攻略引导区域（移动到页面底部，使用两行两列样式） -->
+		<view style="position: fixed; bottom: 100rpx; left: 0; right: 0; padding: 40rpx 30rpx; background: white; z-index: 1000; border-top: 2rpx solid #e9ecef;">
 			<view class="section-header">
-				<text class="section-title">攻略制作特色</text>
+				<text class="section-title">功能入口</text>
 			</view>
 			<view class="features-grid">
-				<view class="feature-item">
-					<view class="feature-icon">🗺️</view>
-					<text class="feature-title">智能路线规划</text>
-					<text class="feature-desc">自动优化行程路线，节省时间</text>
+				<view class="feature-item" bindtap="startPlanning">
+					<view class="feature-icon">📝</view>
+					<text class="feature-title">创建新攻略</text>
 				</view>
-				<view class="feature-item">
-					<view class="feature-icon">💰</view>
-					<text class="feature-title">预算管理</text>
-					<text class="feature-desc">实时计算旅行费用</text>
+				<view class="feature-item" bindtap="viewMyPlans">
+					<view class="feature-icon">📂</view>
+					<text class="feature-title">我的攻略</text>
 				</view>
-				<view class="feature-item">
-					<view class="feature-icon">📅</view>
-					<text class="feature-title">时间安排</text>
-					<text class="feature-desc">合理分配每日行程</text>
+				<view class="feature-item" bindtap="viewTemplates">
+					<view class="feature-icon">📋</view>
+					<text class="feature-title">攻略模板</text>
 				</view>
-				<view class="feature-item">
-					<view class="feature-icon">📱</view>
-					<text class="feature-title">多端同步</text>
-					<text class="feature-desc">随时随地查看攻略</text>
+				<view class="feature-item" bindtap="startAIChat">
+					<view class="feature-icon">🚀</view>
+					<text class="feature-title">一键定制旅行</text>
 				</view>
 			</view>
 		</view>

@@ -33,103 +33,75 @@
 				</view>
 			</view>
 
-			<!-- 功能入口区 -->
+			<!-- 特色特区（调换到上面位置，使用一行样式） -->
 			<view class="quick-actions-section">
 				<view class="quick-actions-grid">
-					<view class="action-card" @click="startPlanning">
+					<view class="action-card" @click="showRoutePlanning">
 						<view class="action-icon-wrapper">
-							<image src="/static/images/background/image1.png" class="action-card-image" mode="aspectFit"></image>
+							<text class="feature-icon">🗺️</text>
 						</view>
-						<text class="action-title">创建新攻略</text>
+						<text class="action-title">智能路线规划</text>
 					</view>
 					
-				<view class="action-card" @click="viewMyPlans">
+				<view class="action-card" @click="showBudgetManagement">
 					<view class="action-icon-wrapper">
-						<image src="/static/images/background/image2.png" class="action-card-image" mode="aspectFit"></image>
+						<text class="feature-icon">💰</text>
 					</view>
-					<text class="action-title">我的攻略</text>
+					<text class="action-title">预算管理</text>
 				</view>
 					
-					<view class="action-card" @click="viewTemplates">
+					<view class="action-card" @click="showTimeArrangement">
 						<view class="action-icon-wrapper">
-							<image src="/static/images/background/image4.png" class="action-card-image" mode="aspectFit"></image>
+							<text class="feature-icon">📅</text>
 						</view>
-						<text class="action-title">攻略模板</text>
+						<text class="action-title">时间安排</text>
 					</view>
 					
-					<view class="action-card" @click="startAIChat">
+					<view class="action-card" @click="showMultiDeviceSync">
 						<view class="action-icon-wrapper">
-							<image src="/static/images/background/image3.png" class="action-card-image" mode="aspectFit"></image>
+							<text class="feature-icon">📱</text>
 						</view>
-						<text class="action-title">一键定制旅行</text>
+						<text class="action-title">多端同步</text>
 					</view>
 				</view>
 			</view>
 
-			<!-- 特色特区 -->
+			<!-- 功能入口区（移动到页面底部，使用两行两列样式） -->
 			<view class="features-section">
 				<view class="section-header">
 					<view class="section-indicator"></view>
-					<text class="section-title">特色特区</text>
+					<text class="section-title">功能入口</text>
 				</view>
 				
 				<view class="features-grid">
-					<view class="feature-card">
+					<view class="feature-card" @click="startPlanning">
 						<view class="feature-icon-wrapper">
-							<text class="feature-icon">🗺️</text>
+							<image src="/static/images/background/image1.png" class="action-card-image" mode="aspectFit"></image>
 						</view>
-						<text class="feature-title">智能路线规划</text>
-						<text class="feature-desc">根据你的偏好，规划最优旅行路线，让旅途更顺畅</text>
+						<text class="feature-title">创建新攻略</text>
 					</view>
 					
-					<view class="feature-card">
+					<view class="feature-card" @click="viewMyPlans">
 						<view class="feature-icon-wrapper">
-							<text class="feature-icon">💰</text>
+							<image src="/static/images/background/image2.png" class="action-card-image" mode="aspectFit"></image>
 						</view>
-						<text class="feature-title">预算管理</text>
-						<text class="feature-desc">实现智能旅行费用管理，合理控制旅行开支</text>
+						<text class="feature-title">我的攻略</text>
 					</view>
 					
-					<view class="feature-card">
+					<view class="feature-card" @click="viewTemplates">
 						<view class="feature-icon-wrapper">
-							<text class="feature-icon">📅</text>
+							<image src="/static/images/background/image4.png" class="action-card-image" mode="aspectFit"></image>
 						</view>
-						<text class="feature-title">时间安排</text>
-						<text class="feature-desc">科学规划每日行程，充分利用旅行时间</text>
+						<text class="feature-title">攻略模板</text>
 					</view>
 					
-					<view class="feature-card">
+					<view class="feature-card" @click="startAIChat">
 						<view class="feature-icon-wrapper">
-							<text class="feature-icon">📱</text>
+							<image src="/static/images/background/image3.png" class="action-card-image" mode="aspectFit"></image>
 						</view>
-						<text class="feature-title">多端同步</text>
-						<text class="feature-desc">支持多设备同步，随时随地查看和编辑行程</text>
+						<text class="feature-title">一键定制旅行</text>
 					</view>
 				</view>
-			</view>
-		</view>
-
-		<!-- 底部导航栏 -->
-		<view class="bottom-nav">
-			<view class="nav-item active">
-				<text class="nav-icon">🏠</text>
-				<text class="nav-text">首页</text>
-			</view>
-			<view class="nav-item">
-				<text class="nav-icon">📝</text>
-				<text class="nav-text">制作攻略</text>
-			</view>
-			<view class="nav-item">
-				<text class="nav-icon">👥</text>
-				<text class="nav-text">发帖社区</text>
-			</view>
-			<view class="nav-item">
-				<text class="nav-icon">🤝</text>
-				<text class="nav-text">匹配搭子</text>
-			</view>
-			<view class="nav-item">
-				<text class="nav-icon">👤</text>
-				<text class="nav-text">我的</text>
 			</view>
 		</view>
 	</view>
@@ -162,6 +134,31 @@
 				uni.navigateTo({
 					url: '/pages/ai-chat/ai-chat'
 				})
+			},
+			// 特色功能方法
+			showRoutePlanning() {
+				uni.showToast({
+					title: '智能路线规划功能开发中',
+					icon: 'none'
+				})
+			},
+			showBudgetManagement() {
+				uni.showToast({
+					title: '预算管理功能开发中',
+					icon: 'none'
+				})
+			},
+			showTimeArrangement() {
+				uni.showToast({
+					title: '时间安排功能开发中',
+					icon: 'none'
+				})
+			},
+			showMultiDeviceSync() {
+				uni.showToast({
+					title: '多端同步功能开发中',
+					icon: 'none'
+				})
 			}
 		}
 	}
@@ -179,7 +176,17 @@
 	/* 主内容区域 */
 	.main-content {
 		padding-top: 0;
-		padding-bottom: 120rpx;
+		padding-bottom: 0;
+		min-height: calc(100vh - 500rpx - 100rpx);
+		display: flex;
+		flex-direction: column;
+	}
+	
+	/* 确保功能入口区域在底部 */
+	.features-section {
+		flex-grow: 1;
+		margin-top: auto;
+		margin-bottom: 100rpx; /* 紧贴底部导航栏 */
 	}
 	
 	/* 头部 Banner 区样式 */
@@ -305,16 +312,17 @@
 	
 	/* 功能入口区 */
 	.quick-actions-section {
-		margin: -40rpx 30rpx 0rpx 0rpx;
-		background: linear-gradient(to bottom, #fceeff, #ffffff);
+		margin: -40rpx 30rpx -10rpx 0rpx; /* 减少负margin，缩短向下延伸距离 */
+		background: linear-gradient(to right, #e6f7ff, #fceeff, #fff0e6);
 		opacity: 1;
-		border-radius: 40rpx 40rpx 0rpx 0rpx;
-		padding: 15rpx 15rpx;
+		border-radius: 40rpx 40rpx 25rpx 25rpx; /* 微调底部圆角 */
+		padding: 15rpx 15rpx 30rpx 15rpx; /* 减少底部内边距 */
 		position: relative;
-		z-index: 5;
-		border: 2rpx solid rgba(0, 0, 0, 0.1);
+		z-index: 10; /* 提高z-index确保覆盖下面内容 */
 		width: calc(100% - 30rpx);
 		overflow: visible;
+		min-height: 180rpx; /* 减少最小高度 */
+		box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.15); /* 保持阴影效果 */
 	}
 	
 	.quick-actions-grid {
@@ -327,17 +335,17 @@
 		flex: 1;
 		background: transparent;
 		border-radius: 20rpx;
-		padding: 15rpx 10rpx;
+		padding: 20rpx 15rpx;
 		transform: scale(1);
 		transition: all 0.3s;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 8rpx;
+		gap: 12rpx;
 		box-sizing: border-box;
-		min-height: 100rpx;
-		min-width: 160rpx;
+		min-height: 140rpx;
+		min-width: 180rpx;
 	}
 	
 	.action-card:active {
@@ -346,25 +354,25 @@
 	}
 	
 	.action-icon-wrapper {
-		width: 60rpx;
-		height: 60rpx;
-		border-radius: 15rpx;
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 20rpx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background: linear-gradient(135deg, #e6f7ff, #f0f8ff);
 		flex-shrink: 0;
-		padding: 8rpx;
+		padding: 10rpx;
 		box-sizing: border-box;
 	}
 	
-	.action-card-icon {
-		font-size: 32rpx;
+	.feature-icon {
+		font-size: 48rpx;
 	}
 	
 	.action-card-image {
-		width: 48rpx;
-		height: 48rpx;
+		width: 60rpx;
+		height: 60rpx;
 		max-width: 100%;
 		max-height: 100%;
 		object-fit: contain;
@@ -382,21 +390,26 @@
 	
 	/* 特色特区 */
 	.features-section {
-		padding: 0 30rpx 40rpx;
-		background: linear-gradient(to right, #fceeff, #fff0e6), linear-gradient(to bottom, #fceeff, #ffffff);
+		padding: 0 30rpx 60rpx; /* 增加底部内边距 */
+		background: 
+			linear-gradient(135deg, #e6f7ff 0%, #e6f7ff 5%, transparent 15%),
+			linear-gradient(to right, #fceeff, #fff0e6);
 		opacity: 0.95;
-		border-radius: 30rpx;
-		margin-top: 10rpx;
+		border-radius: 40rpx; /* 增加圆角半径 */
+		margin-top: -20rpx; /* 负边距向上移动，覆盖上面的内容 */
 		position: relative;
-		z-index: 4;
-		border: 2rpx solid rgba(0, 0, 0, 0.1);
+		z-index: 10; /* 提高层级确保覆盖 */
+		box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+		min-height: 450rpx; /* 进一步增加最小高度 */
+		margin-bottom: 120rpx; /* 增加下边框距离 */
 	}
 	
 	.section-header {
 		display: flex;
 		align-items: center;
-		margin-bottom: 40rpx;
-		padding: 0 20rpx;
+		margin-bottom: 60rpx; /* 进一步增加与下面功能卡片的间距 */
+		padding: 20rpx 20rpx 0rpx 20rpx; /* 增加顶部内边距，让文字向上移动 */
+		margin-top: 10rpx; /* 从顶部开始有更多空间 */
 	}
 	
 	.section-indicator {
@@ -466,46 +479,6 @@
 		font-size: 24rpx; /* 约12px */
 		color: #666;
 		line-height: 1.4;
-	}
-	
-	/* 底部导航栏 */
-	.bottom-nav {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 100rpx;
-		background: white;
-		display: flex;
-		justify-content: space-around;
-		align-items: center;
-		border-top: 1rpx solid #eee;
-		z-index: 100;
-	}
-	
-	.nav-item {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 5rpx;
-	}
-	
-	.nav-item.active .nav-icon,
-	.nav-item.active .nav-text {
-		color: #20B2AA;
-	}
-	
-	.nav-item:not(.active) .nav-icon,
-	.nav-item:not(.active) .nav-text {
-		color: #999;
-	}
-	
-	.nav-icon {
-		font-size: 36rpx;
-	}
-	
-	.nav-text {
-		font-size: 24rpx; /* 约12px */
 	}
 	
 	/* 基础动画定义 */
