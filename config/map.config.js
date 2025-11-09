@@ -72,23 +72,30 @@ const mapUtils = {
   },
   
   // 地址解析（地址转坐标）
-  geocode(address) {
+  geocode(address, region = '') {
     return new Promise((resolve, reject) => {
+      const requestData = {
+        key: mapConfig.key,
+        address: address
+      }
+      // 只有当region不为空时才添加region参数
+      if (region && region.trim()) {
+        requestData.region = region.trim()
+      }
+      
       uni.request({
         url: mapApiUrls.geocoder,
-        data: {
-          key: mapConfig.key,
-          address: address,
-          region: '' // 可选参数，指定搜索区域
-        },
+        data: requestData,
         success: (res) => {
           if (res.data.status === 0) {
             resolve(res.data.result)
           } else {
-            reject(new Error(res.data.message))
+            reject(new Error(res.data.message || '地址解析失败'))
           }
         },
-        fail: reject
+        fail: (err) => {
+          reject(new Error('网络请求失败: ' + (err.errMsg || '未知错误')))
+        }
       })
     })
   },
@@ -118,23 +125,32 @@ const mapUtils = {
   // 搜索地点
   searchPlaces(keyword, region = '') {
     return new Promise((resolve, reject) => {
+      const requestData = {
+        key: mapConfig.key,
+        keyword: keyword,
+        page_size: 20,
+        page_index: 1
+      }
+      // 腾讯地图地点搜索API使用boundary参数，格式为region(城市名)
+      // 只有当region不为空时才添加boundary参数
+      if (region && region.trim()) {
+        requestData.boundary = `region(${region.trim()})`
+      }
+      // 注意：不要同时传递region和boundary参数，腾讯地图API会报错
+      
       uni.request({
         url: mapApiUrls.search,
-        data: {
-          key: mapConfig.key,
-          keyword: keyword,
-          region: region,
-          page_size: 20,
-          page_index: 1
-        },
+        data: requestData,
         success: (res) => {
           if (res.data.status === 0) {
-            resolve(res.data.data)
+            resolve(res.data.data || [])
           } else {
-            reject(new Error(res.data.message))
+            reject(new Error(res.data.message || '搜索失败'))
           }
         },
-        fail: reject
+        fail: (err) => {
+          reject(new Error('网络请求失败: ' + (err.errMsg || '未知错误')))
+        }
       })
     })
   },
