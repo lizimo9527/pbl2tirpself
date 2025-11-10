@@ -21,6 +21,7 @@ if (!Math) {
   "./pages/test/test.js";
   "./pages/template-detail/template-detail.js";
   "./pages/ai-chat/ai-chat.js";
+  "./pages/ai-guide/ai-guide.js";
 }
 const _sfc_main = {
   onLaunch: function() {

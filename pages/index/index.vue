@@ -95,12 +95,6 @@
 						<text class="feature-title">攻略模板</text>
 					</view>
 					
-					<view class="feature-card" @click="startAIChat">
-						<view class="feature-icon-wrapper">
-							<image src="/static/images/background/image3.png" class="action-card-image" mode="aspectFit"></image>
-						</view>
-						<text class="feature-title">一键定制旅行</text>
-					</view>
 				</view>
 			</view>
 		</view>
@@ -128,11 +122,6 @@
 			viewTemplates() {
 				uni.navigateTo({
 					url: '/pages/templates/templates'
-				})
-			},
-			startAIChat() {
-				uni.navigateTo({
-					url: '/pages/ai-chat/ai-chat'
 				})
 			},
 			// 特色功能方法

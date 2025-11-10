@@ -18,7 +18,8 @@
     "pages/database/database",
     "pages/test/test",
     "pages/template-detail/template-detail",
-    "pages/ai-chat/ai-chat"
+    "pages/ai-chat/ai-chat",
+    "pages/ai-guide/ai-guide"
   ],
   "window": {
     "navigationBarTextStyle": "white",

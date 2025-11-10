@@ -11,8 +11,7 @@ const n8nConfig = {
   endpoints: {
     travelPlanGenerator: '', // 旅行攻略生成工作流（使用主webhook地址）
     geocoding: '', // 地理编码工作流
-    weatherForecast: '', // 天气预报工作流
-    aiChat: '' // AI聊天工作流
+    weatherForecast: '' // 天气预报工作流
   },
 
   // 默认旅行参数

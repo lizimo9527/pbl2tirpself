@@ -1,536 +1,646 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
+const services_location_service = require("../../../services/location.service.js");
 const config_map_config = require("../../../config/map.config.js");
-const services_guideService = require("../../../services/guideService.js");
-const services_aiService = require("../../../services/aiService.js");
 const _sfc_main = {
   data() {
     return {
-      title: "",
-      destination: "",
-      content: "",
-      imagePath: "",
-      tagInput: "",
-      tags: [],
-      // 编辑模式相关
-      editMode: false,
-      guideId: "",
-      // 地图相关数据
-      mapCenter: {
-        longitude: config_map_config.mapConfig.defaultCenter.longitude,
-        latitude: config_map_config.mapConfig.defaultCenter.latitude
-      },
-      mapScale: config_map_config.mapConfig.zoomLevel,
-      markers: [],
-      selectedLocation: null,
-      isMapLoading: false,
-      // 折线相关数据
-      polyline: [],
-      // 预览模式相关
-      showPreview: false,
+      templateData: null,
       showMapModal: false,
-      showTransportationModal: false,
-      // 用户信息
-      userInfo: {
-        nickName: "游客"
-      },
-      // 行程数据
-      days: [],
-      currentAttraction: null,
-      // AI生成状态
-      isGenerating: false
+      mapMarkers: [],
+      mapPolyline: [],
+      // 编辑状态
+      editingTitle: false,
+      editingSubtitle: false,
+      editingDayTitle: null,
+      editingLocationName: null,
+      editingLocationDesc: null,
+      editingLocationTime: null,
+      editingTransportType: null,
+      editingTransportRoute: null,
+      editingLocationDetails: null,
+      editingTipIndex: null,
+      // 删除确认
+      showDeleteConfirm: false,
+      deleteMessage: "",
+      deleteType: null,
+      // 'day' or 'location'
+      deleteDayIndex: null,
+      deleteLocationDayIndex: null,
+      deleteLocationIndex: null,
+      deletingDayIndex: null,
+      deletingLocationId: null,
+      // 全屏地图
+      showFullMap: false,
+      currentLocationName: "",
+      staticMapLongitude: config_map_config.mapConfig.defaultCenter.longitude,
+      staticMapLatitude: config_map_config.mapConfig.defaultCenter.latitude,
+      staticMapScale: 16,
+      fullMapMarkers: [],
+      mapKey: 0,
+      markersLocked: false,
+      isMapUpdating: false,
+      mapInitialized: false
     };
   },
   onLoad(options) {
-    if (options.id) {
-      this.editMode = true;
-      this.guideId = options.id;
-      this.loadGuideData();
+    if (options.templateData) {
+      try {
+        const decodedData = decodeURIComponent(options.templateData);
+        this.templateData = JSON.parse(decodedData);
+        this.initTemplateData();
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/guide/edit/edit.vue:426", "解析模板数据失败:", error);
+        common_vendor.index.showToast({
+          title: "加载模板失败",
+          icon: "none"
+        });
+      }
     }
-    this.initMapData();
   },
   methods: {
-    // 初始化地图数据
-    initMapData() {
-      this.markers = [];
-      this.polyline = [];
-    },
-    // 加载攻略数据
-    async loadGuideData() {
-      try {
-        const guideData = await services_guideService.guideService.getGuideById(this.guideId);
-        this.title = guideData.title;
-        this.destination = guideData.destination;
-        this.content = guideData.content;
-        this.imagePath = guideData.imagePath;
-        this.tags = guideData.tags || [];
-        this.days = guideData.days || [];
-        this.generateMapMarkersFromDays();
-      } catch (error) {
-        common_vendor.index.__f__("error", "at pages/guide/edit/edit.vue:453", "加载攻略数据失败:", error);
-        common_vendor.index.showToast({
-          title: "加载失败",
-          icon: "none"
-        });
-      }
-    },
-    // 标题输入
-    onTitleInput(e) {
-      this.title = e.detail.value;
-    },
-    // 目的地输入
-    onDestinationInput(e) {
-      this.destination = e.detail.value;
-    },
-    // 内容输入
-    onContentInput(e) {
-      this.content = e.detail.value;
-    },
-    // 标签输入
-    onTagInput(e) {
-      this.tagInput = e.detail.value;
-    },
-    // 添加标签
-    addTag() {
-      if (this.tagInput.trim() && this.tags.length < 5) {
-        this.tags.push(this.tagInput.trim());
-        this.tagInput = "";
-      }
-    },
-    // 移除标签
-    removeTag(index) {
-      this.tags.splice(index, 1);
-    },
-    // 选择图片
-    chooseImage() {
-      common_vendor.index.chooseImage({
-        count: 1,
-        sizeType: ["compressed"],
-        sourceType: ["album", "camera"],
-        success: (res) => {
-          this.imagePath = res.tempFilePaths[0];
-        }
-      });
-    },
-    // 移除图片
-    removeImage() {
-      this.imagePath = "";
-    },
-    // 地图点击
-    onMapTap(e) {
-      const { latitude, longitude } = e.detail;
-      this.selectedLocation = {
-        latitude,
-        longitude
-      };
-      this.addMarker(latitude, longitude);
-    },
-    // 标记点击
-    onMarkerTap(e) {
-      const markerId = e.detail.markerId;
-      const marker = this.markers.find((m) => m.id === markerId);
-      if (marker) {
-        this.selectedLocation = {
-          latitude: marker.latitude,
-          longitude: marker.longitude
-        };
-      }
-    },
-    // 添加标记
-    addMarker(latitude, longitude) {
-      const markerId = this.markers.length + 1;
-      this.markers.push({
-        id: markerId,
-        latitude,
-        longitude,
-        iconPath: "/static/images/marker.png",
-        width: 30,
-        height: 30
-      });
-      this.updatePolyline();
-    },
-    // 更新折线
-    updatePolyline() {
-      if (this.markers.length > 1) {
-        this.polyline = [{
-          points: this.markers.map((marker) => ({
-            latitude: marker.latitude,
-            longitude: marker.longitude
-          })),
-          color: "#1A9E8F",
-          width: 4,
-          dottedLine: false
-        }];
-      } else {
-        this.polyline = [];
-      }
-    },
-    // 清除标记
-    clearMarkers() {
-      this.markers = [];
-      this.polyline = [];
-      this.selectedLocation = null;
-    },
-    // 地图定位
-    locateOnMap() {
-      common_vendor.index.getLocation({
-        type: "gcj02",
-        success: (res) => {
-          this.mapCenter.latitude = res.latitude;
-          this.mapCenter.longitude = res.longitude;
-          this.addMarker(res.latitude, res.longitude);
-        }
-      });
-    },
-    // 地图搜索
-    searchOnMap() {
-      common_vendor.index.showToast({
-        title: "搜索功能开发中",
-        icon: "none"
-      });
-    },
-    // AI生成攻略
-    async generateWithAI() {
-      if (!this.destination) {
-        common_vendor.index.showToast({
-          title: "请先填写目的地",
-          icon: "none"
-        });
+    initTemplateData() {
+      if (!this.templateData)
         return;
+      if (this.templateData.days) {
+        this.templateData.days.forEach((day, index) => {
+          if (typeof day.expanded === "undefined") {
+            this.$set(day, "expanded", index === 0);
+          }
+          if (day.locations) {
+            day.locations.forEach((location, locIndex) => {
+              if (typeof location.showDetails === "undefined") {
+                this.$set(location, "showDetails", false);
+              }
+              if (location.description && !location.desc) {
+                this.$set(location, "desc", location.description);
+              }
+              if (!location.coordinates && this.templateData.mapMarkers) {
+                const marker = this.templateData.mapMarkers.find((m) => m.title === location.name);
+                if (marker) {
+                  location.coordinates = {
+                    lat: marker.latitude,
+                    lng: marker.longitude
+                  };
+                }
+              }
+            });
+          }
+        });
       }
-      this.isGenerating = true;
-      try {
-        const result = await services_aiService.aiService.generateGuide({
-          destination: this.destination,
-          days: 3
-        });
-        this.content = result.content;
-        this.days = result.days || [];
-        this.generateMapMarkersFromDays();
-        common_vendor.index.showToast({
-          title: "AI生成成功",
-          icon: "success"
-        });
-      } catch (error) {
-        common_vendor.index.__f__("error", "at pages/guide/edit/edit.vue:623", "AI生成失败:", error);
-        common_vendor.index.showToast({
-          title: "生成失败，请重试",
-          icon: "none"
-        });
-      } finally {
-        this.isGenerating = false;
+      if (this.templateData.mapMarkers) {
+        this.mapMarkers = this.templateData.mapMarkers.map((marker, index) => ({
+          id: index + 1,
+          longitude: marker.longitude,
+          latitude: marker.latitude,
+          title: marker.title,
+          iconPath: "/static/images/map/marker.png",
+          width: 30,
+          height: 30
+        }));
+      }
+      if (this.templateData.mapPolyline) {
+        this.mapPolyline = this.templateData.mapPolyline;
       }
     },
-    // 根据天数生成地图标记
-    generateMapMarkersFromDays() {
-      this.markers = [];
-      if (this.days && this.days.length > 0) {
-        this.days.forEach((day) => {
-          if (day.attractions && day.attractions.length > 0) {
-            day.attractions.forEach((attraction, index) => {
-              if (attraction.coordinates) {
-                this.markers.push({
-                  id: attraction.id || `${day.day}-${index}`,
-                  latitude: attraction.coordinates.latitude,
-                  longitude: attraction.coordinates.longitude,
-                  title: attraction.name,
-                  iconPath: "/static/images/marker.png",
+    // 编辑功能
+    startEditTitle() {
+      this.editingTitle = true;
+    },
+    saveTitle() {
+      this.editingTitle = false;
+    },
+    startEditSubtitle() {
+      this.editingSubtitle = true;
+    },
+    saveSubtitle() {
+      this.editingSubtitle = false;
+    },
+    startEditDayTitle(dayIndex) {
+      this.editingDayTitle = dayIndex;
+    },
+    saveDayTitle(dayIndex) {
+      this.editingDayTitle = null;
+    },
+    startEditLocationName(dayIndex, locIndex) {
+      this.editingLocationName = `${dayIndex}-${locIndex}`;
+    },
+    saveLocationName(dayIndex, locIndex) {
+      this.editingLocationName = null;
+    },
+    startEditLocationDesc(dayIndex, locIndex) {
+      this.editingLocationDesc = `${dayIndex}-${locIndex}`;
+    },
+    saveLocationDesc(dayIndex, locIndex) {
+      this.editingLocationDesc = null;
+    },
+    startEditLocationTime(dayIndex, locIndex) {
+      this.editingLocationTime = `${dayIndex}-${locIndex}`;
+    },
+    saveLocationTime(dayIndex, locIndex) {
+      this.editingLocationTime = null;
+    },
+    startEditTransportType(dayIndex, locIndex, transIndex) {
+      this.editingTransportType = `${dayIndex}-${locIndex}-${transIndex}`;
+    },
+    saveTransportType(dayIndex, locIndex, transIndex) {
+      this.editingTransportType = null;
+    },
+    startEditTransportRoute(dayIndex, locIndex, transIndex) {
+      this.editingTransportRoute = `${dayIndex}-${locIndex}-${transIndex}`;
+    },
+    saveTransportRoute(dayIndex, locIndex, transIndex) {
+      this.editingTransportRoute = null;
+    },
+    startEditLocationDetails(dayIndex, locIndex) {
+      this.editingLocationDetails = `${dayIndex}-${locIndex}`;
+    },
+    saveLocationDetails(dayIndex, locIndex) {
+      this.editingLocationDetails = null;
+    },
+    startEditTip(tipIndex) {
+      this.editingTipIndex = tipIndex;
+    },
+    saveTip(tipIndex) {
+      this.editingTipIndex = null;
+    },
+    // 天数管理
+    toggleDay(dayIndex) {
+      if (this.templateData.days[dayIndex]) {
+        this.$set(this.templateData.days[dayIndex], "expanded", !this.templateData.days[dayIndex].expanded);
+      }
+    },
+    addNewDay() {
+      if (!this.templateData.days) {
+        this.templateData.days = [];
+      }
+      const newDay = {
+        day: this.templateData.days.length + 1,
+        title: `第${this.templateData.days.length + 1}天：行程`,
+        expanded: true,
+        locations: []
+      };
+      this.templateData.days.push(newDay);
+    },
+    showDeleteDayConfirm(dayIndex) {
+      this.deleteType = "day";
+      this.deleteDayIndex = dayIndex;
+      this.deletingDayIndex = dayIndex;
+      this.deleteMessage = "您确定要删除这一天的所有行程吗？";
+      this.showDeleteConfirm = true;
+    },
+    // 地点管理
+    toggleLocationDetails(dayIndex, locIndex) {
+      const location = this.templateData.days[dayIndex].locations[locIndex];
+      if (location) {
+        this.$set(location, "showDetails", !location.showDetails);
+      }
+    },
+    addNewLocation(dayIndex) {
+      if (!this.templateData.days[dayIndex].locations) {
+        this.templateData.days[dayIndex].locations = [];
+      }
+      const newLocation = {
+        name: "新地点",
+        desc: "请输入地点描述",
+        time: "1-2小时",
+        showDetails: false,
+        transport: [
+          { type: "🚇", route: "请输入地铁线路" },
+          { type: "🚕", route: "请输入出租车信息" }
+        ],
+        details: "",
+        coordinates: null
+      };
+      this.templateData.days[dayIndex].locations.push(newLocation);
+    },
+    showDeleteLocationConfirm(dayIndex, locIndex) {
+      this.deleteType = "location";
+      this.deleteLocationDayIndex = dayIndex;
+      this.deleteLocationIndex = locIndex;
+      this.deletingLocationId = `${dayIndex}-${locIndex}`;
+      this.deleteMessage = "您确定要删除这个地点吗？";
+      this.showDeleteConfirm = true;
+    },
+    // 删除确认
+    confirmDelete() {
+      if (this.deleteType === "day") {
+        this.templateData.days.splice(this.deleteDayIndex, 1);
+        this.templateData.days.forEach((day, index) => {
+          day.day = index + 1;
+          day.title = day.title.replace(/第\d+天/, `第${index + 1}天`);
+        });
+        this.initTemplateData();
+      } else if (this.deleteType === "location") {
+        this.templateData.days[this.deleteLocationDayIndex].locations.splice(this.deleteLocationIndex, 1);
+      }
+      this.cancelDelete();
+      this.updateMapMarkers();
+    },
+    cancelDelete() {
+      this.showDeleteConfirm = false;
+      this.deleteType = null;
+      this.deleteDayIndex = null;
+      this.deleteLocationDayIndex = null;
+      this.deleteLocationIndex = null;
+      this.deletingDayIndex = null;
+      this.deletingLocationId = null;
+    },
+    // 地图功能
+    showMap() {
+      this.updateMapMarkers();
+      this.showMapModal = true;
+    },
+    closeMap() {
+      this.showMapModal = false;
+    },
+    updateMapMarkers() {
+      this.mapMarkers = [];
+      this.mapPolyline = [];
+      if (this.templateData && this.templateData.days) {
+        const allPoints = [];
+        let markerId = 0;
+        this.templateData.days.forEach((day, dayIndex) => {
+          if (day.locations) {
+            day.locations.forEach((location, locIndex) => {
+              if (location.coordinates && location.coordinates.lng && location.coordinates.lat) {
+                const marker = {
+                  id: markerId++,
+                  longitude: location.coordinates.lng,
+                  latitude: location.coordinates.lat,
+                  title: location.name,
+                  iconPath: "/static/images/map/marker.png",
                   width: 30,
                   height: 30
+                };
+                this.mapMarkers.push(marker);
+                allPoints.push({
+                  longitude: location.coordinates.lng,
+                  latitude: location.coordinates.lat
                 });
               }
             });
           }
         });
-        this.updatePolyline();
-      }
-    },
-    // 批量添加坐标
-    batchAddCoordinates() {
-      common_vendor.index.showToast({
-        title: "批量添加坐标功能开发中",
-        icon: "none"
-      });
-    },
-    // 切换天数展开状态
-    toggleDay(dayNumber) {
-      const day = this.days.find((d) => d.day === dayNumber);
-      if (day) {
-        day.expanded = !day.expanded;
-      }
-    },
-    // 切换景点展开状态
-    toggleAttraction(attractionId) {
-      for (const day of this.days) {
-        if (day.attractions) {
-          const attraction = day.attractions.find((a) => a.id === attractionId);
-          if (attraction) {
-            attraction.expanded = !attraction.expanded;
-            break;
-          }
+        if (allPoints.length > 1) {
+          this.mapPolyline = [{
+            points: allPoints,
+            color: "#165DFF",
+            width: 6,
+            dottedLine: false
+          }];
         }
       }
     },
-    // 切换预览模式
-    togglePreview() {
-      this.showPreview = !this.showPreview;
-      if (this.showPreview) {
-        this.generateMapMarkersFromDays();
-      }
-    },
-    // 保存草稿
-    async saveDraft() {
-      try {
-        const guideData = {
-          title: this.title,
-          destination: this.destination,
-          content: this.content,
-          imagePath: this.imagePath,
-          tags: this.tags,
-          days: this.days
-        };
-        if (this.editMode) {
-          await services_guideService.guideService.updateGuide(this.guideId, guideData);
-        } else {
-          await services_guideService.guideService.createGuide(guideData);
-        }
+    // 地点定位
+    async showLocationOnMap(dayIndex, locIndex) {
+      const location = this.templateData.days[dayIndex].locations[locIndex];
+      if (!location || !location.name || !location.name.trim()) {
         common_vendor.index.showToast({
-          title: "保存成功",
-          icon: "success"
-        });
-      } catch (error) {
-        common_vendor.index.__f__("error", "at pages/guide/edit/edit.vue:722", "保存草稿失败:", error);
-        common_vendor.index.showToast({
-          title: "保存失败",
+          title: "地点名称不能为空",
           icon: "none"
         });
-      }
-    },
-    // 发布攻略
-    async publishGuide() {
-      if (!this.validateForm()) {
         return;
       }
-      try {
-        const guideData = {
-          title: this.title,
-          destination: this.destination,
-          content: this.content,
-          imagePath: this.imagePath,
-          tags: this.tags,
-          days: this.days,
-          published: true
-        };
-        if (this.editMode) {
-          await services_guideService.guideService.updateGuide(this.guideId, guideData);
-        } else {
-          const result = await services_guideService.guideService.createGuide(guideData);
-          this.guideId = result.id;
+      if (!location.coordinates) {
+        common_vendor.index.showLoading({
+          title: "正在定位..."
+        });
+        try {
+          const coords = await services_location_service.locationService.getCoordinatesByName(location.name.trim());
+          if (coords && coords.latitude && coords.longitude) {
+            location.coordinates = {
+              lat: coords.latitude,
+              lng: coords.longitude
+            };
+          } else {
+            throw new Error("获取坐标失败");
+          }
+        } catch (error) {
+          common_vendor.index.__f__("error", "at pages/guide/edit/edit.vue:717", "获取坐标失败:", error);
+          common_vendor.index.hideLoading();
+          common_vendor.index.showToast({
+            title: "无法获取地点坐标，请检查地点名称",
+            icon: "none",
+            duration: 2e3
+          });
+          return;
         }
+        common_vendor.index.hideLoading();
+      }
+      if (!location.coordinates || !location.coordinates.lng || !location.coordinates.lat) {
         common_vendor.index.showToast({
-          title: "发布成功",
-          icon: "success"
+          title: "地点坐标无效，无法显示地图",
+          icon: "none",
+          duration: 2e3
         });
+        return;
+      }
+      this.currentLocationName = location.name;
+      this.staticMapLongitude = Number(Number(location.coordinates.lng).toFixed(6));
+      this.staticMapLatitude = Number(Number(location.coordinates.lat).toFixed(6));
+      this.staticMapScale = 16;
+      this.mapInitialized = false;
+      this.markersLocked = false;
+      this.isMapUpdating = true;
+      this.mapKey++;
+      this.showFullMap = true;
+      const markerToAdd = {
+        id: 0,
+        longitude: this.staticMapLongitude,
+        latitude: this.staticMapLatitude,
+        title: location.name,
+        iconPath: "/static/images/map/marker.png",
+        width: 30,
+        height: 30,
+        callout: {
+          content: location.name,
+          color: "#ffffff",
+          fontSize: 14,
+          borderRadius: 4,
+          bgColor: "#165DFF",
+          padding: 8,
+          display: "ALWAYS",
+          textAlign: "center"
+        }
+      };
+      this.$nextTick(() => {
         setTimeout(() => {
-          common_vendor.index.navigateBack();
-        }, 1500);
-      } catch (error) {
-        common_vendor.index.__f__("error", "at pages/guide/edit/edit.vue:764", "发布攻略失败:", error);
+          this.fullMapMarkers = [markerToAdd];
+          this.mapInitialized = true;
+          this.markersLocked = true;
+          setTimeout(() => {
+            this.isMapUpdating = false;
+          }, 1e3);
+        }, 300);
+      });
+    },
+    closeFullMap() {
+      this.showFullMap = false;
+      this.isMapUpdating = false;
+      this.mapInitialized = false;
+      this.markersLocked = false;
+      this.fullMapMarkers = [];
+    },
+    onMapMarkerTap(e) {
+      const markerId = e.detail.markerId;
+      const marker = this.fullMapMarkers.find((m) => m.id === markerId);
+      if (marker) {
         common_vendor.index.showToast({
-          title: "发布失败",
+          title: marker.title,
           icon: "none"
         });
       }
     },
-    // 表单验证
-    validateForm() {
-      if (!this.title.trim()) {
-        common_vendor.index.showToast({
-          title: "请填写攻略标题",
-          icon: "none"
-        });
-        return false;
-      }
-      if (!this.destination.trim()) {
-        common_vendor.index.showToast({
-          title: "请填写目的地",
-          icon: "none"
-        });
-        return false;
-      }
-      if (!this.content.trim()) {
-        common_vendor.index.showToast({
-          title: "请填写攻略内容",
-          icon: "none"
-        });
-        return false;
-      }
-      return true;
+    onMapTap(e) {
     },
-    // 返回上一页
+    onMapUpdated() {
+    },
+    onMapRegionChange(e) {
+      if (this.isMapUpdating) {
+        return;
+      }
+      if (this.markersLocked) {
+        const causedBy = e.causedBy || "";
+        const type = e.type || "";
+        if (type === "end" && (causedBy === "drag" || causedBy === "scale" || causedBy === "gesture")) {
+          return;
+        }
+        if (type === "begin" || type === "update") {
+          if (causedBy !== "drag" && causedBy !== "scale" && causedBy !== "gesture") {
+            return;
+          }
+        }
+        return;
+      }
+    },
+    // 更换背景图
+    changeBannerImage() {
+      common_vendor.index.chooseImage({
+        count: 1,
+        sizeType: ["compressed"],
+        sourceType: ["album", "camera"],
+        success: (res) => {
+          this.templateData.image = res.tempFilePaths[0];
+        }
+      });
+    },
+    // 返回
     goBack() {
       common_vendor.index.navigateBack();
     }
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
   return common_vendor.e({
-    a: !$data.showPreview
-  }, !$data.showPreview ? common_vendor.e({
-    b: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
-    c: common_vendor.t($data.editMode ? "编辑攻略" : "创建攻略"),
-    d: $data.content
-  }, $data.content ? {
-    e: common_vendor.o((...args) => $options.togglePreview && $options.togglePreview(...args))
-  } : {}, {
-    f: common_vendor.o((...args) => $options.saveDraft && $options.saveDraft(...args)),
-    g: common_vendor.o((...args) => $options.publishGuide && $options.publishGuide(...args)),
-    h: !$data.imagePath
-  }, !$data.imagePath ? {
-    i: common_vendor.o((...args) => $options.chooseImage && $options.chooseImage(...args))
+    a: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
+    b: common_vendor.t($data.templateData ? $data.templateData.title : "编辑攻略"),
+    c: common_vendor.o((...args) => $options.showMap && $options.showMap(...args)),
+    d: $data.templateData
+  }, $data.templateData ? common_vendor.e({
+    e: $data.templateData.image,
+    f: common_vendor.o((...args) => $options.changeBannerImage && $options.changeBannerImage(...args)),
+    g: !$data.editingTitle
+  }, !$data.editingTitle ? {
+    h: common_vendor.t($data.templateData.title),
+    i: $data.editingTitle ? 1 : "",
+    j: common_vendor.o((...args) => $options.startEditTitle && $options.startEditTitle(...args))
   } : {
-    j: $data.imagePath,
-    k: common_vendor.o((...args) => $options.chooseImage && $options.chooseImage(...args)),
-    l: common_vendor.o((...args) => $options.removeImage && $options.removeImage(...args))
+    k: common_vendor.o((...args) => $options.saveTitle && $options.saveTitle(...args)),
+    l: common_vendor.o((...args) => $options.saveTitle && $options.saveTitle(...args)),
+    m: $data.editingTitle,
+    n: $data.templateData.title,
+    o: common_vendor.o(($event) => $data.templateData.title = $event.detail.value)
   }, {
-    m: common_vendor.o((...args) => $options.onTitleInput && $options.onTitleInput(...args)),
-    n: $data.title,
-    o: common_vendor.o((...args) => $options.onDestinationInput && $options.onDestinationInput(...args)),
-    p: $data.destination,
-    q: common_vendor.o((...args) => $options.locateOnMap && $options.locateOnMap(...args)),
-    r: common_vendor.o((...args) => $options.searchOnMap && $options.searchOnMap(...args)),
-    s: common_vendor.o((...args) => $options.clearMarkers && $options.clearMarkers(...args)),
-    t: $data.mapCenter.longitude,
-    v: $data.mapCenter.latitude,
-    w: $data.mapScale,
-    x: $data.markers,
-    y: $data.polyline,
-    z: common_vendor.o((...args) => $options.onMapTap && $options.onMapTap(...args)),
-    A: common_vendor.o((...args) => $options.onMarkerTap && $options.onMarkerTap(...args)),
-    B: $data.isMapLoading
-  }, $data.isMapLoading ? {} : {}, {
-    C: $data.selectedLocation
-  }, $data.selectedLocation ? {
-    D: common_vendor.t($data.selectedLocation.address || "自定义位置"),
-    E: common_vendor.t($data.selectedLocation.longitude.toFixed(6)),
-    F: common_vendor.t($data.selectedLocation.latitude.toFixed(6))
-  } : {}, {
-    G: common_vendor.t($data.isGenerating ? "生成中..." : "AI生成"),
-    H: common_vendor.o((...args) => $options.generateWithAI && $options.generateWithAI(...args)),
-    I: $data.isGenerating,
-    J: common_vendor.o((...args) => $options.onContentInput && $options.onContentInput(...args)),
-    K: $data.content,
-    L: common_vendor.t($data.content.length),
-    M: common_vendor.o((...args) => $options.onTagInput && $options.onTagInput(...args)),
-    N: $data.tagInput,
-    O: common_vendor.o((...args) => $options.addTag && $options.addTag(...args)),
-    P: common_vendor.f($data.tags, (tag, index, i0) => {
-      return {
-        a: common_vendor.t(tag),
-        b: common_vendor.o(($event) => $options.removeTag(index), index),
-        c: index
-      };
-    })
-  }) : common_vendor.e({
-    Q: common_vendor.o((...args) => $options.togglePreview && $options.togglePreview(...args)),
-    R: common_vendor.t($data.title || "未命名攻略"),
-    S: common_vendor.o((...args) => $options.saveDraft && $options.saveDraft(...args)),
-    T: common_vendor.o((...args) => $options.publishGuide && $options.publishGuide(...args)),
-    U: $data.imagePath || "/static/images/default-cover.jpg",
-    V: common_vendor.t($data.title || "未命名攻略"),
-    W: common_vendor.t($data.destination ? `探索${$data.destination}的精彩旅程` : "创建您的专属旅行攻略"),
-    X: $data.days && $data.days.length > 0
-  }, $data.days && $data.days.length > 0 ? common_vendor.e({
-    Y: $data.days.some((day) => day.attractions && day.attractions.some((attraction) => !attraction.coordinates))
-  }, $data.days.some((day) => day.attractions && day.attractions.some((attraction) => !attraction.coordinates)) ? {
-    Z: common_vendor.o((...args) => $options.batchAddCoordinates && $options.batchAddCoordinates(...args))
-  } : {}, {
-    aa: common_vendor.o((...args) => $options.generateMapMarkersFromDays && $options.generateMapMarkersFromDays(...args))
-  }) : {}, {
-    ab: $data.days && $data.days.length > 0
-  }, $data.days && $data.days.length > 0 ? {
-    ac: common_vendor.f($data.days, (day, k0, i0) => {
+    p: !$data.editingSubtitle
+  }, !$data.editingSubtitle ? {
+    q: common_vendor.t($data.templateData.subtitle),
+    r: $data.editingSubtitle ? 1 : "",
+    s: common_vendor.o((...args) => $options.startEditSubtitle && $options.startEditSubtitle(...args))
+  } : {
+    t: common_vendor.o((...args) => $options.saveSubtitle && $options.saveSubtitle(...args)),
+    v: common_vendor.o((...args) => $options.saveSubtitle && $options.saveSubtitle(...args)),
+    w: $data.editingSubtitle,
+    x: $data.templateData.subtitle,
+    y: common_vendor.o(($event) => $data.templateData.subtitle = $event.detail.value)
+  }, {
+    z: common_vendor.o((...args) => $options.addNewDay && $options.addNewDay(...args)),
+    A: common_vendor.f($data.templateData.days, (day, dayIndex, i0) => {
       return common_vendor.e({
-        a: common_vendor.t(day.day),
-        b: common_vendor.t(day.title),
-        c: common_vendor.t(day.expanded ? "▼" : "▶"),
-        d: common_vendor.o(($event) => $options.toggleDay(day.day), day.day),
-        e: day.expanded
-      }, day.expanded ? {
-        f: common_vendor.f(day.attractions, (attraction, index, i1) => {
+        a: common_vendor.t(day.day || dayIndex + 1),
+        b: $data.deletingDayIndex === dayIndex ? 1 : "",
+        c: common_vendor.o(($event) => $options.showDeleteDayConfirm(dayIndex), dayIndex),
+        d: $data.editingDayTitle !== dayIndex
+      }, $data.editingDayTitle !== dayIndex ? {
+        e: common_vendor.t(day.title || `第${dayIndex + 1}天：行程`),
+        f: $data.editingDayTitle === dayIndex ? 1 : "",
+        g: common_vendor.o(($event) => $options.startEditDayTitle(dayIndex), dayIndex)
+      } : {
+        h: common_vendor.o(($event) => $options.saveDayTitle(dayIndex), dayIndex),
+        i: common_vendor.o(($event) => $options.saveDayTitle(dayIndex), dayIndex),
+        j: $data.editingDayTitle === dayIndex,
+        k: day.title,
+        l: common_vendor.o(($event) => day.title = $event.detail.value, dayIndex)
+      }, {
+        m: day.expanded ? 1 : "",
+        n: common_vendor.o(($event) => $options.toggleDay(dayIndex), dayIndex),
+        o: common_vendor.o(($event) => $options.addNewLocation(dayIndex), dayIndex),
+        p: common_vendor.f(day.locations, (location, locIndex, i1) => {
           return common_vendor.e({
-            a: common_vendor.t(index + 1),
-            b: common_vendor.t(attraction.name),
-            c: common_vendor.t(attraction.expanded ? "▼" : "▶"),
-            d: common_vendor.o(($event) => $options.toggleAttraction(attraction.id), attraction.id),
-            e: attraction.expanded
-          }, attraction.expanded ? common_vendor.e({
-            f: common_vendor.t(attraction.description),
-            g: common_vendor.t(attraction.duration),
-            h: common_vendor.t(attraction.coordinates ? "📍 已添加坐标" : "❌ 未添加坐标"),
-            i: attraction.coordinates ? 1 : "",
-            j: !attraction.coordinates ? 1 : "",
-            k: attraction.transportation && attraction.transportation.subway
-          }, attraction.transportation && attraction.transportation.subway ? {
-            l: common_vendor.t(attraction.transportation.subway.time),
-            m: common_vendor.t(attraction.transportation.subway.cost)
-          } : {}, {
-            n: attraction.transportation && attraction.transportation.taxi
-          }, attraction.transportation && attraction.transportation.taxi ? {
-            o: common_vendor.t(attraction.transportation.taxi.time),
-            p: common_vendor.t(attraction.transportation.taxi.cost)
-          } : {}, {
-            q: !attraction.transportation || !attraction.transportation.subway && !attraction.transportation.taxi
-          }, !attraction.transportation || !attraction.transportation.subway && !attraction.transportation.taxi ? {} : {}, {
-            r: attraction.expanded ? 1 : ""
+            a: $data.editingLocationName !== `${dayIndex}-${locIndex}`
+          }, $data.editingLocationName !== `${dayIndex}-${locIndex}` ? {
+            b: common_vendor.t(location.name || "新地点"),
+            c: $data.editingLocationName === `${dayIndex}-${locIndex}` ? 1 : "",
+            d: common_vendor.o(($event) => $options.startEditLocationName(dayIndex, locIndex), locIndex)
+          } : {
+            e: common_vendor.o(($event) => $options.saveLocationName(dayIndex, locIndex), locIndex),
+            f: common_vendor.o(($event) => $options.saveLocationName(dayIndex, locIndex), locIndex),
+            g: $data.editingLocationName === `${dayIndex}-${locIndex}`,
+            h: location.name,
+            i: common_vendor.o(($event) => location.name = $event.detail.value, locIndex)
+          }, {
+            j: $data.editingLocationDesc !== `${dayIndex}-${locIndex}`
+          }, $data.editingLocationDesc !== `${dayIndex}-${locIndex}` ? {
+            k: common_vendor.t(location.desc || location.description || "请输入地点描述"),
+            l: $data.editingLocationDesc === `${dayIndex}-${locIndex}` ? 1 : "",
+            m: common_vendor.o(($event) => $options.startEditLocationDesc(dayIndex, locIndex), locIndex)
+          } : {
+            n: common_vendor.o(($event) => $options.saveLocationDesc(dayIndex, locIndex), locIndex),
+            o: common_vendor.o(($event) => $options.saveLocationDesc(dayIndex, locIndex), locIndex),
+            p: $data.editingLocationDesc === `${dayIndex}-${locIndex}`,
+            q: location.desc,
+            r: common_vendor.o(($event) => location.desc = $event.detail.value, locIndex)
+          }, {
+            s: $data.editingLocationTime !== `${dayIndex}-${locIndex}`
+          }, $data.editingLocationTime !== `${dayIndex}-${locIndex}` ? {
+            t: common_vendor.t(location.time || "1-2小时"),
+            v: $data.editingLocationTime === `${dayIndex}-${locIndex}` ? 1 : "",
+            w: common_vendor.o(($event) => $options.startEditLocationTime(dayIndex, locIndex), locIndex)
+          } : {
+            x: common_vendor.o(($event) => $options.saveLocationTime(dayIndex, locIndex), locIndex),
+            y: common_vendor.o(($event) => $options.saveLocationTime(dayIndex, locIndex), locIndex),
+            z: $data.editingLocationTime === `${dayIndex}-${locIndex}`,
+            A: location.time,
+            B: common_vendor.o(($event) => location.time = $event.detail.value, locIndex)
+          }, {
+            C: common_vendor.o(($event) => $options.showLocationOnMap(dayIndex, locIndex), locIndex),
+            D: common_vendor.f(location.transport, (transport, transIndex, i2) => {
+              return common_vendor.e({
+                a: common_vendor.t(transport.type),
+                b: $data.editingTransportType !== `${dayIndex}-${locIndex}-${transIndex}`
+              }, $data.editingTransportType !== `${dayIndex}-${locIndex}-${transIndex}` ? {
+                c: common_vendor.t(transport.type === "🚇" ? "地铁" : transport.type === "🚕" ? "出租车" : transport.type === "🚌" ? "公交" : "其他"),
+                d: $data.editingTransportType === `${dayIndex}-${locIndex}-${transIndex}` ? 1 : "",
+                e: common_vendor.o(($event) => $options.startEditTransportType(dayIndex, locIndex, transIndex), transIndex)
+              } : {
+                f: common_vendor.o(($event) => $options.saveTransportType(dayIndex, locIndex, transIndex), transIndex),
+                g: common_vendor.o(($event) => $options.saveTransportType(dayIndex, locIndex, transIndex), transIndex),
+                h: $data.editingTransportType === `${dayIndex}-${locIndex}-${transIndex}`,
+                i: transport.type,
+                j: common_vendor.o(($event) => transport.type = $event.detail.value, transIndex)
+              }, {
+                k: $data.editingTransportRoute !== `${dayIndex}-${locIndex}-${transIndex}`
+              }, $data.editingTransportRoute !== `${dayIndex}-${locIndex}-${transIndex}` ? {
+                l: common_vendor.t(transport.route),
+                m: $data.editingTransportRoute === `${dayIndex}-${locIndex}-${transIndex}` ? 1 : "",
+                n: common_vendor.o(($event) => $options.startEditTransportRoute(dayIndex, locIndex, transIndex), transIndex)
+              } : {
+                o: common_vendor.o(($event) => $options.saveTransportRoute(dayIndex, locIndex, transIndex), transIndex),
+                p: common_vendor.o(($event) => $options.saveTransportRoute(dayIndex, locIndex, transIndex), transIndex),
+                q: $data.editingTransportRoute === `${dayIndex}-${locIndex}-${transIndex}`,
+                r: transport.route,
+                s: common_vendor.o(($event) => transport.route = $event.detail.value, transIndex)
+              }, {
+                t: transIndex
+              });
+            }),
+            E: location.details
+          }, location.details ? common_vendor.e({
+            F: $data.editingLocationDetails !== `${dayIndex}-${locIndex}`
+          }, $data.editingLocationDetails !== `${dayIndex}-${locIndex}` ? {
+            G: common_vendor.t(location.details),
+            H: $data.editingLocationDetails === `${dayIndex}-${locIndex}` ? 1 : "",
+            I: common_vendor.o(($event) => $options.startEditLocationDetails(dayIndex, locIndex), locIndex)
+          } : {
+            J: common_vendor.o(($event) => $options.saveLocationDetails(dayIndex, locIndex), locIndex),
+            K: $data.editingLocationDetails === `${dayIndex}-${locIndex}`,
+            L: location.details,
+            M: common_vendor.o(($event) => location.details = $event.detail.value, locIndex)
           }) : {}, {
-            s: attraction.id
+            N: location.showDetails,
+            O: locIndex,
+            P: $data.deletingLocationId === `${dayIndex}-${locIndex}` ? 1 : "",
+            Q: common_vendor.o(($event) => $options.toggleLocationDetails(dayIndex, locIndex), locIndex),
+            R: common_vendor.o(($event) => $options.showDeleteLocationConfirm(dayIndex, locIndex), locIndex)
           });
-        })
-      } : {}, {
-        g: day.day
+        }),
+        q: day.expanded,
+        r: dayIndex
+      });
+    }),
+    B: $data.templateData.tips && $data.templateData.tips.length > 0
+  }, $data.templateData.tips && $data.templateData.tips.length > 0 ? {
+    C: common_vendor.f($data.templateData.tips, (tip, tipIndex, i0) => {
+      return common_vendor.e({
+        a: common_vendor.t(tipIndex === 0 ? "ℹ️" : tipIndex === 1 ? "📍" : tipIndex === 2 ? "☀️" : "🍽️"),
+        b: $data.editingTipIndex !== tipIndex
+      }, $data.editingTipIndex !== tipIndex ? {
+        c: common_vendor.t(tip),
+        d: $data.editingTipIndex === tipIndex ? 1 : "",
+        e: common_vendor.o(($event) => $options.startEditTip(tipIndex), tipIndex)
+      } : {
+        f: common_vendor.o(($event) => $options.saveTip(tipIndex), tipIndex),
+        g: common_vendor.o(($event) => $options.saveTip(tipIndex), tipIndex),
+        h: $data.editingTipIndex === tipIndex,
+        i: $data.templateData.tips[tipIndex],
+        j: common_vendor.o(($event) => $data.templateData.tips[tipIndex] = $event.detail.value, tipIndex)
+      }, {
+        k: tipIndex
       });
     })
+  } : {}) : {}, {
+    D: $data.showDeleteConfirm
+  }, $data.showDeleteConfirm ? {
+    E: common_vendor.o((...args) => $options.cancelDelete && $options.cancelDelete(...args))
   } : {}, {
-    ad: common_vendor.t($data.content || "暂无内容，请添加详细的攻略内容..."),
-    ae: $data.tags.length > 0
-  }, $data.tags.length > 0 ? {
-    af: common_vendor.f($data.tags, (tag, index, i0) => {
-      return {
-        a: common_vendor.t(tag),
-        b: index
-      };
-    })
+    F: $data.showDeleteConfirm
+  }, $data.showDeleteConfirm ? {
+    G: common_vendor.t($data.deleteMessage),
+    H: common_vendor.o((...args) => $options.cancelDelete && $options.cancelDelete(...args)),
+    I: common_vendor.o((...args) => $options.confirmDelete && $options.confirmDelete(...args))
   } : {}, {
-    ag: common_vendor.o(($event) => $data.showMapModal = true),
-    ah: $data.mapCenter.longitude,
-    ai: $data.mapCenter.latitude,
-    aj: $data.mapScale,
-    ak: $data.markers,
-    al: $data.polyline
-  }), {
-    am: $data.showMapModal
+    J: $data.showMapModal
   }, $data.showMapModal ? {
-    an: common_vendor.o(($event) => $data.showMapModal = false),
-    ao: common_vendor.t($data.title || "攻略"),
-    ap: common_vendor.o(($event) => $data.showMapModal = false),
-    aq: $data.mapCenter.longitude,
-    ar: $data.mapCenter.latitude,
-    as: $data.mapScale,
-    at: $data.markers,
-    av: $data.polyline
+    K: common_vendor.o((...args) => $options.closeMap && $options.closeMap(...args)),
+    L: common_vendor.t($data.templateData ? $data.templateData.title + "地图" : "景点地图"),
+    M: common_vendor.o((...args) => $options.closeMap && $options.closeMap(...args)),
+    N: $data.mapMarkers.length > 0 ? $data.mapMarkers[0].longitude : 116.3974,
+    O: $data.mapMarkers.length > 0 ? $data.mapMarkers[0].latitude : 39.9093,
+    P: $data.mapMarkers,
+    Q: $data.mapPolyline
   } : {}, {
-    aw: $data.showTransportationModal
-  }, $data.showTransportationModal ? {
-    ax: common_vendor.o(($event) => $data.showTransportationModal = false),
-    ay: common_vendor.t((_a = $data.currentAttraction) == null ? void 0 : _a.name),
-    az: common_vendor.o(($event) => $data.showTransportationModal = false),
-    aA: common_vendor.t((_d = (_c = (_b = $data.currentAttraction) == null ? void 0 : _b.transportation) == null ? void 0 : _c.subway) == null ? void 0 : _d.time),
-    aB: common_vendor.t((_g = (_f = (_e = $data.currentAttraction) == null ? void 0 : _e.transportation) == null ? void 0 : _f.subway) == null ? void 0 : _g.cost),
-    aC: common_vendor.t((_j = (_i = (_h = $data.currentAttraction) == null ? void 0 : _h.transportation) == null ? void 0 : _i.taxi) == null ? void 0 : _j.time),
-    aD: common_vendor.t((_m = (_l = (_k = $data.currentAttraction) == null ? void 0 : _k.transportation) == null ? void 0 : _l.taxi) == null ? void 0 : _m.cost)
-  } : {});
+    R: $data.showFullMap
+  }, $data.showFullMap ? common_vendor.e({
+    S: common_vendor.o((...args) => $options.closeFullMap && $options.closeFullMap(...args)),
+    T: common_vendor.t($data.currentLocationName || "地点定位"),
+    U: common_vendor.o(() => {
+    }),
+    V: $data.showFullMap
+  }, $data.showFullMap ? {
+    W: `map-${$data.mapKey}`,
+    X: $data.staticMapLongitude,
+    Y: $data.staticMapLatitude,
+    Z: $data.staticMapScale,
+    aa: $data.markersLocked ? $data.fullMapMarkers : [],
+    ab: common_vendor.o((...args) => $options.onMapMarkerTap && $options.onMapMarkerTap(...args)),
+    ac: common_vendor.o((...args) => $options.onMapRegionChange && $options.onMapRegionChange(...args)),
+    ad: common_vendor.o((...args) => $options.onMapTap && $options.onMapTap(...args)),
+    ae: common_vendor.o((...args) => $options.onMapUpdated && $options.onMapUpdated(...args))
+  } : {}, {
+    af: common_vendor.o(() => {
+    }),
+    ag: common_vendor.o((...args) => $options.closeFullMap && $options.closeFullMap(...args))
+  }) : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
 wx.createPage(MiniProgramPage);

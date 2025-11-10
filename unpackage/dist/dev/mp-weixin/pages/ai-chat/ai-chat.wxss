@@ -4,62 +4,91 @@
 		flex-direction: column;
 		height: 100vh;
 		background-color: #ffffff;
-		padding-top: 40rpx;
 		box-sizing: border-box;
 }
 
-	/* 返回按钮样式 */
-.back-button {
-		position: absolute;
-		top: 40rpx;
-		left: 30rpx;
-		background: none;
-		border: none;
-		color: #333;
-		font-size: 48rpx;
-		cursor: pointer;
-		padding: 16rpx;
-		border-radius: 50%;
-		transition: background-color 0.3s;
+	/* 导航栏样式 */
+.detail-header {
+		padding: 10rpx 30rpx;
+		background: #1A9E8F;
+		color: white;
+		position: relative;
 		z-index: 10;
 }
-.back-button:hover {
-		background-color: rgba(0, 0, 0, 0.05);
+.header-top-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 60rpx;
+}
+.header-back {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 60rpx;
+		height: 60rpx;
 }
 .back-icon {
-		font-size: 48rpx;
+		font-size: 36rpx;
 		font-weight: bold;
+		color: white;
 }
-
-	/* 标题区域样式 */
-.app-header {
+.header-title {
+		font-size: 28rpx;
 		text-align: center;
-		padding: 40rpx 32rpx 30rpx;
-		background: linear-gradient(135deg, #1A9E8F 0%, #15847a 100%);
+		flex: 1;
 		color: white;
-		margin: 0 30rpx 30rpx;
-		border-radius: 25rpx;
-		box-shadow: 0 4rpx 20rpx rgba(26, 158, 143, 0.3);
 }
-.main-title {
-		font-size: 56rpx;
-		font-weight: 700;
+.header-right-icons {
+		display: flex;
+		align-items: center;
+		gap: 20rpx;
+		width: 120rpx;
+		justify-content: flex-end;
+}
+.header-icon {
+		font-size: 36rpx;
 		color: white;
-		margin: 0 0 20rpx 0;
-		letter-spacing: 1rpx;
-		display: block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 50rpx;
+		height: 50rpx;
 }
-.sub-title {
+.menu-icon {
+		font-size: 40rpx;
+		line-height: 1;
+		transform: rotate(90deg);
+}
+.eye-icon {
 		font-size: 32rpx;
-		color: rgba(255, 255, 255, 0.9);
-		margin: 0;
-		font-weight: 400;
-		display: block;
+}
+	
+	/* 渐变标题区域 */
+.header-gradient {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		padding: 30rpx 30rpx 25rpx;
+		color: white;
+}
+.header-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+}
+.page-title {
+		font-size: 40rpx;
+		font-weight: bold;
+		margin-bottom: 8rpx;
+}
+.page-subtitle {
+		font-size: 24rpx;
+		opacity: 0.9;
 }
 .chat-content {
 		flex: 1;
 		overflow: hidden;
-		padding: 0 30rpx;
+		padding: 30rpx 30rpx 20rpx;
 		background-color: #f8f9fa;
 }
 .message-list {
@@ -163,63 +192,75 @@
 }
 .input-section {
 		background: white;
-		padding: 25rpx 30rpx;
+		padding: 12rpx 30rpx;
 		border-top: 2rpx solid #f0f0f0;
 }
 .input-container {
 		display: flex;
 		align-items: flex-end;
 		gap: 20rpx;
-		margin-bottom: 20rpx;
+		margin-bottom: 12rpx;
 }
 .message-input {
 		flex: 1;
 		background: #f8f9fa;
 		border: 2rpx solid #e9ecef;
-		border-radius: 25rpx;
-		padding: 25rpx 30rpx;
+		border-radius: 50rpx;
+		padding: 18rpx 28rpx;
 		font-size: 28rpx;
-		min-height: 100rpx;
+		min-height: 70rpx;
 		max-height: 200rpx;
-		margin-right: 20rpx;
+		line-height: 1.5;
+		box-sizing: border-box;
 }
 .send-btn {
 		background: linear-gradient(135deg, #1A9E8F 0%, #15847a 100%);
 		color: white;
 		border: none;
-		border-radius: 15rpx;
-		width: 120rpx;
-		height: 80rpx;
+		border-radius: 50rpx;
+		width: 100rpx;
+		height: 70rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
 		font-size: 28rpx;
 		font-weight: 500;
+		box-shadow: 0 4rpx 12rpx rgba(26, 158, 143, 0.3);
+		transition: all 0.3s ease;
+}
+.send-btn:active {
+		transform: scale(0.95);
+		box-shadow: 0 2rpx 8rpx rgba(26, 158, 143, 0.2);
 }
 .send-btn:disabled {
-		background: #ccc;
+		background: #d0d0d0;
+		box-shadow: none;
+		opacity: 0.6;
+}
+.send-btn:disabled:active {
+		transform: none;
 }
 .send-icon {
 		font-size: 28rpx;
 }
 .quick-tips {
-		margin-top: 20rpx;
+		margin-top: 8rpx;
 }
 .tips-title {
-		font-size: 24rpx;
+		font-size: 22rpx;
 		color: #666;
-		margin-bottom: 15rpx;
+		margin-bottom: 8rpx;
 		display: block;
 }
 .tips-list {
 		display: flex;
 		flex-direction: column;
-		gap: 12rpx;
+		gap: 8rpx;
 }
 .tip-item {
 		background: #f8f9fa;
-		padding: 15rpx 20rpx;
+		padding: 12rpx 20rpx;
 		border-radius: 20rpx;
 		font-size: 26rpx;
 		color: #1A9E8F;

@@ -7,14 +7,14 @@ class N8NService {
   }
 
   /**
-   * 调用n8n工作流生成AI旅行攻略
+   * 调用n8n工作流生成旅行攻略
    * @param {Object} userInput - 用户输入信息
    * @param {string} userInput.destination - 目的地
    * @param {number} userInput.days - 旅行天数
    * @param {number} userInput.budget - 预算
    * @param {string} userInput.preferences - 偏好
    * @param {string} userInput.travelType - 旅行类型（家庭/情侣/独自等）
-   * @returns {Promise<Object>} - AI生成的攻略数据
+   * @returns {Promise<Object>} - 生成的攻略数据
    */
   async generateTravelPlan(userInput) {
     try {
@@ -29,17 +29,26 @@ class N8NService {
           timestamp: new Date().toISOString(),
           platform: 'mini-program',
           action: 'generate-travel-plan'
-        }
+        },
+        timeout: 30000 // 30秒超时
       });
 
       if (response.statusCode === 200) {
-        return response.data;
+        return {
+          success: true,
+          data: response.data
+        };
       } else {
         throw new Error(`n8n工作流调用失败: ${response.statusCode}`);
       }
     } catch (error) {
       console.error('n8n服务调用错误:', error);
-      throw error;
+      // 如果n8n服务不可用，返回错误信息
+      return {
+        success: false,
+        error: error.message || 'n8n工作流调用失败',
+        data: null
+      };
     }
   }
 

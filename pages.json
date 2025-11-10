@@ -108,13 +108,6 @@
 			"style": {
 				"navigationBarTitleText": "模板详情"
 			}
-		},
-		{
-			"path": "pages/ai-chat/ai-chat",
-			"style": {
-				"navigationBarTitleText": "AI旅行助手",
-				"navigationStyle": "custom"
-			}
 		}
 	],
 	"globalStyle": {

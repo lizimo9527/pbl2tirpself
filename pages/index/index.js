@@ -131,12 +131,4 @@ Page({
     })
   },
 
-  /**
-   * 一键定制旅行
-   */
-  startAIChat: function() {
-    wx.navigateTo({
-      url: '/pages/ai-chat/ai-chat'
-    })
-  }
 })
